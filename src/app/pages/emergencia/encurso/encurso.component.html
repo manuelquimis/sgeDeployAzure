@@ -1,0 +1,1163 @@
+<div
+  class="surface-section px-5 py-4 shadow-1 border-round"
+  style="min-height: calc(100vh - 9rem); position: relative"
+>
+  <div class="grid">
+    <div class="col-12 xs:col-12 sm:col-12 md:col-5 lg:col-5">
+      <div class="mr-5 flex align-items-center m-2">
+        <i
+          class="pi pi-building fa-solid fa-house-fire mr-2 sm:text-sm md:text-base lg:text-lg text-900"
+        ></i>
+        <span
+          class="capitalize font-bold sm:text-sm md:text-base lg:text-lg text-900"
+          >emergencias</span
+        >
+        <strong
+          class="mr-1 ml-1 font-bold sm:text-sm md:text-base lg:text-lg"
+          style="color: red"
+          >|</strong
+        >
+        <p-progressSpinner
+          *ngIf="mostrarIndicadorCarga"
+          styleClass="w-2rem h-2rem"
+        ></p-progressSpinner>
+        <p-chip
+          *ngIf="mostrarIndicadorCarga === false"
+          class="sm:text-sm md:text-base lg:text-lg text-900"
+          pTooltip="Total atendidas"
+          tooltipPosition="bottom"
+          >{{ contadorEmergenciasAtendidas }}</p-chip
+        >
+        <span
+          class="capitalize sm:text-sm md:text-base lg:text-lg ml-2 text-900"
+        >
+          Atendidas</span
+        >
+      </div>
+      <p-divider></p-divider>
+    </div>
+    <div class="col-12 xs:col-12 sm:col-12 md:col-4 lg:col-4">
+      <div class="mr-5 flex align-items-center m-2">
+        <i
+          class="pi pi-car mr-2 font-bold sm:text-sm md:text-base lg:text-lg text-900"
+        ></i>
+        <span
+          class="capitalize font-bold sm:text-sm md:text-base lg:text-lg text-900"
+          >Unidades</span
+        >
+        <strong
+          class="mr-1 ml-1 font-bold sm:text-sm md:text-base lg:text-lg"
+          style="color: red"
+          >|</strong
+        >
+
+        <p-progressSpinner
+          *ngIf="mostrarIndicadorCarga"
+          styleClass="w-2rem h-2rem"
+        ></p-progressSpinner>
+        <p-chip
+          *ngIf="mostrarIndicadorCarga === false"
+          class="sm:text-sm md:text-base lg:text-lg text-900"
+          pTooltip="Actualmente dando asistencia"
+          tooltipPosition="bottom"
+          >{{ contadorVehiculosMovilizados }}</p-chip
+        >
+
+        <span
+          class="capitalize sm:text-sm md:text-base lg:text-lg ml-2 text-900"
+          >movilizadas</span
+        >
+      </div>
+      <p-divider></p-divider>
+    </div>
+    <div class="col-12 xs:col-12 sm:col-12 md:col-3 lg:col-3 m-0">
+      <!-- <p-button
+        [loading]="loadingReporteGuardia"
+        (click)="btn_descargar_reporte_guardia()"
+        label="Reporte de Guardia"
+        icon="pi pi-download"
+        styleClass="p-button-sm p-button-info w-full h-3rem sm:text-sm md:text-sm lg:text-sm p-button-rounded p-button-outlined"
+      ></p-button> -->
+    </div>
+
+    <div class="col-12">
+      <div
+        *ngIf="mostrarIndicadorCarga"
+        class="flex justify-content-center align-content-center flex-wrap"
+      >
+        <p-progressSpinner styleClass="w-8rem h-8rem"></p-progressSpinner>
+      </div>
+      <p-table
+        *ngIf="mostrarIndicadorCarga === false"
+        [value]="dataEnCursos"
+        dataKey="uuidEmergencia"
+        editMode="row"
+        [tableStyle]="{ 'min-width': '60rem' }"
+        [rowHover]="true"
+        styleClass="p-datatable-sm"
+        [resizableColumns]="true"
+        [reorderableColumns]="true"
+        class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="min-width: 0rem"></th>
+            <th pResizableColumn>H.Despacho</th>
+            <th pResizableColumn>Tipo</th>
+            <th pResizableColumn>Código</th>
+            <th pResizableColumn>Descripción</th>
+            <th pResizableColumn>Dirección</th>
+            <th pResizableColumn></th>
+          </tr>
+        </ng-template>
+
+        <ng-template
+          pTemplate="body"
+          let-dataEnCurso
+          let-expanded="expanded"
+          let-editing="editing"
+          let-ri="rowIndex"
+          let-index="rowIndex"
+        >
+          <tr
+            [pSelectableRow]="dataEnCurso"
+            [pEditableRow]="dataEnCurso"
+            [pReorderableRow]="index"
+          >
+            <td>
+              <button
+                type="button"
+                pTooltip="Visualizar Vehículos"
+                tooltipPosition="top"
+                pButton
+                pRipple
+                [pRowToggler]="dataEnCurso"
+                class="p-button-text p-button-rounded p-button-plain"
+                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+              ></button>
+            </td>
+            <td style="width: 5%">{{ dataEnCurso.horaDespacho }}</td>
+            <td style="width: 5%">{{ dataEnCurso.descripcionP }}</td>
+            <td style="width: 5%">{{ dataEnCurso.codigoH }}</td>
+            <td style="width: 5%">{{ dataEnCurso.descripcionH }}</td>
+
+            <td>
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <input
+                    pInputText
+                    type="text"
+                    [(ngModel)]="dataEnCurso.direccion"
+                    [style]="{ width: '100%' }"
+                  />
+                </ng-template>
+                <ng-template pTemplate="output" style="width: 50%">
+                  <input
+                    pInputText
+                    type="text"
+                    [(ngModel)]="dataEnCurso.direccion"
+                    [style]="{ width: '100%' }"
+                    disabled=" true"
+                  />
+                </ng-template>
+              </p-cellEditor>
+            </td>
+            <td style="width: 5%" *ngIf="rolUsuario === 'DELTA'">
+              <div class="flex align-items-center justify-content-center gap-2">
+                <button
+                  *ngIf="!editing"
+                  pButton
+                  pTooltip="Agregar vehículo"
+                  tooltipPosition="top"
+                  icon="pi pi-car"
+                  (click)="btn_agregar_unidad(dataEnCurso.uuidEmergencia)"
+                  class="p-button-help p-button-rounded p-button-outlined p-button-sm"
+                ></button>
+                <button
+                  *ngIf="!editing"
+                  pButton
+                  pInitEditableRow
+                  pTooltip="Editar detalle"
+                  tooltipPosition="top"
+                  icon="pi pi-pencil"
+                  (click)="onRowEditInit(dataEnCurso)"
+                  class="p-button-warning p-button-rounded p-button-outlined bbg-yellow-500 p-button-sm"
+                ></button>
+                <button
+                  *ngIf="!editing"
+                  pButton
+                  pTooltip="Agregar información complementaria"
+                  tooltipPosition="top"
+                  icon="pi pi-plus"
+                  (click)="
+                    btn_agregar_datos_emergencia(dataEnCurso.uuidEmergencia)
+                  "
+                  class="p-button-info p-button-rounded p-button-outlined bbg-blue-500 p-button-sm"
+                ></button>
+
+                <button
+                  *ngIf="editing"
+                  pButton
+                  pSaveEditableRow
+                  pTooltip="Guardar cambios"
+                  tooltipPosition="top"
+                  icon="pi pi-check"
+                  (click)="onRowEditSave(dataEnCurso)"
+                  class="p-button-rounded p-button-text p-button-success mr-2"
+                ></button>
+                <button
+                  *ngIf="editing"
+                  pButton
+                  pCancelEditableRow
+                  pTooltip="Deshacer cambios"
+                  tooltipPosition="top"
+                  icon="pi pi-times"
+                  (click)="onRowEditCancel(dataEnCurso, ri)"
+                  class="p-button-rounded p-button-text p-button-danger"
+                ></button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="rowexpansion" let-dataEnCurso>
+          <tr>
+            <td colspan="7">
+              <div class="p-0">
+                <p-table
+                  [value]="dataEnCurso.unidades"
+                  dataKey="nombreUnidad"
+                  editMode="row"
+                  [tableStyle]="{ 'min-width': '60rem' }"
+                  [rowHover]="true"
+                  [reorderableColumns]="true"
+                  [resizableColumns]="true"
+                  class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12"
+                  styleClass="p-datatable-sm"
+                >
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th pResizableColumn>Nombre</th>
+                      <th pResizableColumn>Estación</th>
+                      <th pResizableColumn>
+                        H. Salida <br />
+                        Estación
+                      </th>
+                      <th pResizableColumn>
+                        H. Llegada <br />
+                        Emergencia
+                      </th>
+                      <th pResizableColumn>
+                        Trabajo <br />
+                        Terminado
+                      </th>
+                      <th pResizableColumn>
+                        H. Llegada <br />
+                        Estación
+                      </th>
+                      <th pResizableColumn>
+                        Km <br />
+                        Salida
+                      </th>
+                      <th pResizableColumn>
+                        Km <br />
+                        Entrada
+                      </th>
+                      <th pResizableColumn></th>
+                    </tr>
+                  </ng-template>
+
+                  <ng-template
+                    pTemplate="body"
+                    let-vehiculo
+                    let-editing="editing"
+                    let-ri="rowIndex"
+                    let-index="rowIndex"
+                  >
+                    <tr
+                      [pSelectableRow]="vehiculo"
+                      [pEditableRow]="vehiculo"
+                      [pReorderableRow]="index"
+                    >
+                      <td>
+                        {{ vehiculo.nombreUnidad }}
+                      </td>
+                      <td>
+                        {{ vehiculo.estacionUnidad }}
+                      </td>
+                      <td [pEditableColumn]="vehiculo.horaSalidaEstacion" pEditableColumnField="horaSalidaEstacion">
+                        <p-cellEditor>
+                          <ng-template pTemplate="input" *ngIf="rolUsuario === 'DELTA'">
+                            <input
+                              pInputText
+                              type="time"
+                              [(ngModel)]="vehiculo.horaSalidaEstacion"
+                              [style]="{ width: '100%' }"
+                              (ngModelChange)="onRowEditSaveUnidadHSE(vehiculo)"
+                            />
+                          </ng-template>
+                          <ng-template pTemplate="output">
+                            {{ vehiculo.horaSalidaEstacion }}
+                          </ng-template>
+                        </p-cellEditor>
+                      </td>
+                      <td [pEditableColumn]="vehiculo.horaLlegadaEmergencia" pEditableColumnField="horaLlegadaEmergencia">
+                        <p-cellEditor>
+                          <ng-template pTemplate="input" *ngIf="rolUsuario === 'DELTA'">
+                            <input
+                              pInputText
+                              type="time"
+                              [(ngModel)]="vehiculo.horaLlegadaEmergencia"
+                              [style]="{ width: '100%' }"
+                              (ngModelChange)="onRowEditSaveUnidadHLlE(vehiculo)"
+                            />
+                          </ng-template>
+                          <ng-template pTemplate="output">
+                            {{ vehiculo.horaLlegadaEmergencia }}
+                          </ng-template>
+                        </p-cellEditor>
+                      </td>
+
+                      <td [pEditableColumn]="vehiculo.horaTrabajoTerminado" pEditableColumnField="horaTrabajoTerminado">
+                        <p-cellEditor>
+                          <ng-template pTemplate="input" *ngIf="rolUsuario === 'DELTA'">
+                            <input
+                              pInputText
+                              type="time"
+                              [(ngModel)]="vehiculo.horaTrabajoTerminado"
+                              [style]="{ width: '100%' }"
+                              (ngModelChange)="onRowEditSaveUnidadHTT(vehiculo)"
+                            />
+                          </ng-template>
+                          <ng-template pTemplate="output">
+                            {{ vehiculo.horaTrabajoTerminado }}
+                          </ng-template>
+                        </p-cellEditor>
+                      </td>
+
+                      <td [pEditableColumn]="vehiculo.horaLlegadaEstacion" pEditableColumnField="horaLlegadaEstacion">
+                        <p-cellEditor>
+                          <ng-template pTemplate="input" *ngIf="rolUsuario === 'DELTA'">
+                            <input
+                              pInputText
+                              type="time"
+                              [(ngModel)]="vehiculo.horaLlegadaEstacion"
+                              [style]="{ width: '100%' }"
+                              (ngModelChange)="onRowEditSaveUnidadHLlEs(vehiculo)"
+                            />
+                          </ng-template>
+                          <ng-template pTemplate="output">
+                            {{ vehiculo.horaLlegadaEstacion }}
+                          </ng-template>
+                        </p-cellEditor>
+                      </td>
+
+                      <td>
+                        {{ vehiculo.kmSalida }}
+                      </td>
+
+                      <td [pEditableColumn]="vehiculo.kmEntrada" pEditableColumnField="kmEntrada">
+                        <p-cellEditor>
+                          <ng-template pTemplate="input" *ngIf="rolUsuario === 'DELTA'">
+                            <input
+                              pInputText
+                              type="text"
+                              [(ngModel)]="vehiculo.kmEntrada"
+                              [style]="{ width: '100%' }"
+                              pattern="[0-9]*"  
+                              title="Solo se permiten números enteros" 
+                              oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                              (ngModelChange)="onRowEditSaveUnidadKm(vehiculo)"
+                              
+                                
+                            />
+                          </ng-template>
+                          <ng-template pTemplate="output">
+                            {{ vehiculo.kmEntrada }}
+                          </ng-template>
+                        </p-cellEditor>
+                      </td>
+                      <td >
+                        <div
+                          class="flex align-items-center justify-content-center gap-2" *ngIf="rolUsuario === 'DELTA'"
+                        >
+                          <button
+                            pButton
+                            *ngIf="!editing"
+                            pTooltip="Indicar maquinista"
+                            tooltipPosition="top"
+                            icon="pi pi-user"
+                            (click)="btn_form_asignarMaquinista(vehiculo)"
+                            class="p-button-info p-button-rounded p-button-outlined p-button-sm"
+                          ></button>
+                          
+                          <button
+                            *ngIf="!editing"
+                            pButton
+                            pTooltip="Eliminar unidad"
+                            tooltipPosition="top"
+                            icon="pi pi-trash"
+                            (click)="btn_abrir_modal_eliminar_unidad(vehiculo)"
+                            class="p-button-danger p-button-rounded p-button-outlined bbg-yellow-500 p-button-sm"
+                          ></button>
+
+                          <button
+                            *ngIf="editing"
+                            pButton
+                            pSaveEditableRow
+                            pTooltip="Guardar cambios"
+                            tooltipPosition="top"
+                            icon="pi pi-check"
+                            class="p-button-rounded p-button-text p-button-success mr-0"
+                          ></button>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-template>
+
+                  <ng-template pTemplate="emptymessage">
+                    <tr>
+                      <td colspan="6">No se han asignado unidades</td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+
+<p-dialog
+  header=""
+  [(visible)]="formAddData"
+  [modal]="true"
+  [style]="{ width: '60vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="grid">
+    <div class="col-12 md:col-12 lg:col-6">
+      <div class="mb-0 flex justify-content-center align-items-center">
+        <div>
+          <p
+            class="mt-0 mb-0 sm:text-sm md:text-sm lg:text-lg xl:text-xl font-semibold text-900"
+          >
+            Solicitante
+          </p>
+        </div>
+      </div>
+      <div
+        style="
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(190, 31, 45, 0.4) 40%,
+            rgba(0, 174, 239, 0.4) 60%
+          );
+        "
+        class="mb-5 mt-2"
+      ></div>
+
+      <div class="formgrid grid text-left">
+        <div class="field col-12 md:col-12 lg:col-6">
+          <strong
+            class="sm:text-sm md:text-sm lg:text-base font-semibold ml-2 text-900"
+            >Identificaión</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-sm lg:text-base"
+              [(ngModel)]="dataComplementaria.ciSolicitante"
+            />
+            <i
+              class="pi pi-pencil sm:text-sm md:text-sm lg:text-base text-900"
+            ></i>
+          </span>
+          <div class="text-red-600 mt-3" *ngIf="mostrarErrorRazonEliminacion">
+            Campo obligatorio
+          </div>
+
+          <div class="text-red-600 mt-3" *ngIf="minimoCaracteres">
+            Mínimo 15 caracteres
+          </div>
+        </div>
+        <div class="field col-12 md:col-12 lg:col-6">
+          <strong
+            class="sm:text-sm md:text-sm lg:text-base font-semibold ml-2 text-900"
+            >Teléfono</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <div class="flex flex-column mt-2 p-input-icon-right">
+              <p-inputMask
+                mask="099-999-9999"
+                (ngModelChange)="checkFinalizarButtonVisibility()"
+                [(ngModel)]="dataComplementaria.telefonoSolicitante"
+                class="flex p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              ></p-inputMask>
+              <!-- <i class="pi pi-pencil text-900"></i> -->
+            </div>
+          </span>
+          <p
+            *ngIf="!dataComplementaria.telefonoSolicitante"
+            style="color: rgb(190, 31, 45)"
+            class="text-sm text-start mt-2"
+          >
+            🔴 ​Campo obligatorio
+          </p>
+        </div>
+        <div class="field col-12">
+          <strong
+            class="sm:text-sm md:text-sm lg:text-base font-semibold ml-2 text-900"
+            >Nombres y Apellidos</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-sm lg:text-base"
+              [(ngModel)]="dataComplementaria.nombresCompletoSolicitante"
+            />
+            <i class="pi pi-pencil text-900"></i>
+          </span>
+        </div>
+        <div class="field col-12 md:col-12 lg:col-6">
+          <strong
+            class="sm:text-sm md:text-sm lg:text-base font-semibold ml-2 text-900"
+            >¿Se confirmo?</strong
+          >
+          <div class="flex flex-wrap gap-3 mt-3">
+            <div class="flex align-items-center">
+              <p-radioButton
+                value="Si"
+                [(ngModel)]="dataComplementaria.esConfirmada"
+              ></p-radioButton>
+              <label class="ml-2">Si</label>
+            </div>
+
+            <div class="flex align-items-center">
+              <p-radioButton
+                value="No"
+                [(ngModel)]="dataComplementaria.esConfirmada"
+              ></p-radioButton>
+              <label class="ml-2">No</label>
+            </div>
+          </div>
+          <p
+            *ngIf="!dataComplementaria.esConfirmada"
+            style="color: rgb(190, 31, 45)"
+            class="text-sm text-start mt-2"
+          >
+            🔴 ​Campo obligatorio
+          </p>
+        </div>
+        <div class="field col-12 md:col-12 lg:col-6">
+          <strong
+            class="sm:text-sm md:text-sm lg:text-base font-semibold ml-2 text-900"
+            >H. de Llamada</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="time"
+              class="p-inputtext-sm sm:text-sm md:text-sm lg:text-base"
+              pTooltip="Indicar en que hora se recibió la llamada"
+              tooltipEvent="focus"
+              tooltipPosition="bottom"
+              [(ngModel)]="dataComplementaria.horaLlamada"
+              (ngModelChange)="checkFinalizarButtonVisibility()"
+              required="true"
+            />
+            <i class="pi pi-pencil text-900"></i>
+          </span>
+          <p
+            *ngIf="!dataComplementaria.horaLlamada"
+            style="color: rgb(190, 31, 45)"
+            class="text-sm text-start mt-2"
+          >
+            🔴 ​Campo obligatorio
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 md:col-12 lg:col-6">
+      <div class="mb-0 flex justify-content-center align-items-center">
+        <div>
+          <p
+            class="mt-0 mb-0 sm:text-sm md:text-sm lg:text-lg xl:text-xl font-semibold text-900"
+          >
+            Novedades
+          </p>
+        </div>
+      </div>
+      <div
+        style="
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(190, 31, 45, 0.4) 40%,
+            rgba(0, 174, 239, 0.4) 60%
+          );
+        "
+        class="mb-5 mt-2"
+      ></div>
+
+      <div class="formgrid grid text-left">
+        <div class="field col-12 md:col-12 lg:col-6">
+          <strong
+            class="sm:text-sm md:text-sm lg:text-base font-semibold ml-2 text-900"
+            >Descripción del lugar</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-sm lg:text-base"
+              [(ngModel)]="dataComplementaria.viviendaLocal"
+              pTooltip="Indicar si fue en: una vivienda, un local, espacios públicos u otros"
+              tooltipEvent="focus"
+              tooltipPosition="bottom"
+              required="true"
+              (ngModelChange)="checkFinalizarButtonVisibility()"
+            />
+            <i
+              class="pi pi-pencil sm:text-sm md:text-sm lg:text-base text-900"
+            ></i>
+          </span>
+          <p
+            *ngIf="!dataComplementaria.viviendaLocal"
+            style="color: rgb(190, 31, 45)"
+            class="text-sm text-start mt-2"
+          >
+            🔴 ​Campo obligatorio
+          </p>
+        </div>
+        <div class="field col-12 md:col-12 lg:col-6">
+          <strong
+            class="sm:text-sm md:text-sm lg:text-base font-semibold ml-2 text-900"
+            >Presencia Policial</strong
+          >
+          <div class="flex flex-wrap gap-3 mt-3">
+            <div class="flex align-items-center">
+              <p-radioButton
+                value="Si"
+                [(ngModel)]="dataComplementaria.presenciaPolicial"
+              ></p-radioButton>
+              <label class="ml-2">Si</label>
+            </div>
+
+            <div class="flex align-items-center">
+              <p-radioButton
+                value="No"
+                [(ngModel)]="dataComplementaria.presenciaPolicial"
+              ></p-radioButton>
+              <label class="ml-2">No</label>
+            </div>
+          </div>
+          <p
+            *ngIf="!dataComplementaria.presenciaPolicial"
+            style="color: rgb(190, 31, 45)"
+            class="text-sm text-start mt-2"
+          >
+            🔴 ​Campo obligatorio
+          </p>
+          <!-- <p *ngIf="!isValidPresenciaPolicial()" style="color: rgb(190, 31, 45);" class="text-sm text-start mt-2">🔴 Entrada inválida</p> -->
+        </div>
+
+        <!-- <div class="field col-12 md:col-12 lg:col-6">
+          <strong
+            class="sm:text-sm md:text-sm lg:text-base font-semibold ml-2 text-900"
+            >Presencia Policial</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-sm lg:text-base"
+              [(ngModel)]="dataComplementaria.presenciaPolicial"
+              pTooltip="Indicar Si o No"
+              tooltipEvent="focus"
+              tooltipPosition="bottom"
+              required="true"
+              (ngModelChange)="checkFinalizarButtonVisibility()"
+              pattern="[a-zA-Z]{2}"
+              />
+            <i class="pi pi-pencil text-900"></i>
+          </span>
+          <p
+            *ngIf="!dataComplementaria.presenciaPolicial"
+            style="color: rgb(190, 31, 45)"
+            class="text-sm text-start mt-2"
+          >
+            🔴 ​Campo obligatorio
+          </p>
+        </div> -->
+
+        <div class="field col-12">
+          <strong
+            class="sm:text-sm md:text-sm lg:text-base font-semibold ml-2 text-900"
+            >Observaciones</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <textarea
+              rows="4"
+              pInputText
+              class="w-full col-12"
+              [(ngModel)]="dataComplementaria.observacionRadioOperador"
+              pTooltip="Indicar si existió alguna novedad de la que desee dejar constancia"
+              tooltipEvent="focus"
+              tooltipPosition="bottom"
+              (ngModelChange)="checkFinalizarButtonVisibility()"
+            ></textarea>
+            <i class="pi pi-pencil sm:text-sm md:text-sm lg:text-base"></i>
+          </span>
+          <p
+            *ngIf="!dataComplementaria.observacionRadioOperador"
+            style="color: rgb(190, 31, 45)"
+            class="text-sm text-start mt-2"
+          >
+            🔴 ​Campo obligatorio
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="grid mt-2">
+    <div
+      class="col-12 sm:col-12 md:col-4"
+      *ngIf="isFinalizarButtonVisible === false"
+    >
+      <div class="">
+        <p-button
+          [loading]="loadingGuardarDatos"
+          (click)="btn_guardar_datos_emergencia(dataComplementaria)"
+          label="Guardar"
+          icon="pi pi-save"
+          styleClass="p-button-sm p-button-secondary w-full p-button-rounded p-button-outlined sm:text-sm md:text-sm lg:text-sm"
+        ></p-button>
+      </div>
+    </div>
+    <div
+      class="col-12 sm:col-12 md:col-4"
+      *ngIf="isFinalizarButtonVisible === true"
+    >
+      <div class="">
+        <p-button
+          [loading]="loadingFinalizarEmergencia"
+          (click)="btn_finalizar_emergencia_encurso(dataComplementaria)"
+          label="Finalizar"
+          icon="pi pi-send"
+          styleClass="p-button-sm p-button-success w-full p-button-rounded p-button-outlined sm:text-sm md:text-sm lg:text-sm"
+          visible="isFinalizarButtonVisible"
+        ></p-button>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog
+  header=""
+  [(visible)]="formulario_agregar_unidad"
+  [modal]="true"
+  [style]="{ width: '80vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="grid">
+    <div class="col-12">
+      <div
+        style="
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(190, 31, 45, 0.4) 40%,
+            rgba(0, 174, 239, 0.4) 60%
+          );
+        "
+        class="mb-0 mt-0"
+      ></div>
+      <div class="grid mt-0">
+        <div class="col-12 sm:col-6 md:col-8">
+          <strong>Seleccione las unidades que desea asignar.</strong>
+        </div>
+        <div class="col-12 sm:col-6 md:col-4">
+          <div class="">
+            <p-button
+              [loading]="loading_unidad_guardada"
+              (click)="btn_guardar_unidad()"
+              label="Guardar unidades seleccionadas"
+              icon="pi pi-save"
+              styleClass="p-button-sm p-button-info w-full p-button-rounded p-button-outlined sm:text-sm md:text-sm lg:text-sm"
+            ></p-button>
+          </div>
+        </div>
+      </div>
+      <p-table
+        [value]="datosVehiculos"
+        [(selection)]="vehiculosSeleccionados"
+        dataKey="uuidVehiculo"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        styleClass="p-datatable-sm"
+        [globalFilterFields]="[
+          'nombreVehiculo',
+          'claseVehiculo',
+          'tipoVehiculo',
+          'estadoVehiculo'
+        ]"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 5%"></th>
+            <th style="width: 20%" pSortableColumn="nombreVehiculo">
+              <div class="flex align-items-center justify-content-around">
+                <strong class="capitalize">Nombre</strong>
+                <p-sortIcon field="nombreVehiculo"></p-sortIcon>
+              </div>
+            </th>
+            <th style="width: 20%" pSortableColumn="claseVehiculo">
+              <div class="flex align-items-center justify-content-around">
+                <strong class="capitalize">Clase</strong>
+                <p-sortIcon field="claseVehiculo"></p-sortIcon>
+              </div>
+            </th>
+            <th style="width: 20%" pSortableColumn="tipoVehiculo">
+              <div class="flex align-items-center justify-content-around">
+                <strong class="capitalize">Tipo</strong>
+                <p-sortIcon field="tipoVehiculo"></p-sortIcon>
+              </div>
+            </th>
+            <th style="width: 15%" pSortableColumn="estacionVehiculo">
+              <div class="flex align-items-center justify-content-around">
+                <strong class="capitalize">Estación</strong>
+                <p-sortIcon field="estacionVehiculo"></p-sortIcon>
+              </div>
+            </th>
+            <th style="width: 20%" pSortableColumn="estadoVehiculo">
+              <div class="flex align-items-center justify-content-around">
+                <strong class="capitalize">Estados actuales</strong>
+                <p-sortIcon field="estadoVehiculo"></p-sortIcon>
+              </div>
+            </th>
+          </tr>
+          <tr>
+            <th></th>
+            <th>
+              <p-columnFilter
+                [showClearButton]="false"
+                [showMenu]="false"
+                type="text"
+                field="nombreVehiculo"
+                class="p-input-lg"
+              ></p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                [showClearButton]="false"
+                [showMenu]="false"
+                type="text"
+                field="claseVehiculo"
+              ></p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                [showClearButton]="false"
+                [showMenu]="false"
+                type="text"
+                field="tipoVehiculo"
+              ></p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                [showClearButton]="false"
+                [showMenu]="false"
+                type="text"
+                field="estacionVehiculo"
+              ></p-columnFilter>
+            </th>
+            <th>
+              <p-columnFilter
+                [showClearButton]="false"
+                [showMenu]="false"
+                type="text"
+                field="estadoVehiculo"
+              ></p-columnFilter>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-datoVehiculo>
+          <tr>
+            <td>
+              <div *ngIf="datoVehiculo.estadoVehiculo === 'Libre'">
+                <p-tableCheckbox [value]="datoVehiculo"></p-tableCheckbox>
+              </div>
+              <div
+                *ngIf="
+                  datoVehiculo.estadoVehiculo === 'En uso' ||
+                  datoVehiculo.estadoVehiculo === 'Inoperativo'
+                "
+              >
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="pi pi-ban"
+                  style="color: orange"
+                  pTooltip="No accesible"
+                  tooltipPosition="top"
+                  class="p-button-rounded p-button-text"
+                  [disabled]="true"
+                ></button>
+              </div>
+            </td>
+            <td>{{ datoVehiculo.nombreVehiculo }}</td>
+            <td>{{ datoVehiculo.claseVehiculo }}</td>
+            <td>{{ datoVehiculo.tipoVehiculo }}</td>
+            <td>{{ datoVehiculo.estacionVehiculo }}</td>
+            <td>
+              <div class="flex align-items-center justify-content-center gap-2">
+                <div *ngIf="datoVehiculo.estadoVehiculo === 'Libre'">
+                  <button
+                    pButton
+                    icon="pi pi-car"
+                    severity="success"
+                    [label]="datoVehiculo.estadoVehiculo"
+                    class="p-button-sm p-button-success p-button-outlined"
+                    [disabled]="true"
+                  ></button>
+                </div>
+                <div *ngIf="datoVehiculo.estadoVehiculo === 'En uso'">
+                  <button
+                    pButton
+                    icon="pi pi-car"
+                    severity="info"
+                    [label]="datoVehiculo.estadoVehiculo"
+                    class="p-button-sm p-button-help p-button-outlined"
+                    [disabled]="true"
+                  ></button>
+                </div>
+                <div *ngIf="datoVehiculo.estadoVehiculo === 'Inoperativo'">
+                  <button
+                    pButton
+                    icon="pi pi-car"
+                    severity="danger"
+                    [label]="datoVehiculo.estadoVehiculo"
+                    class="p-button-sm p-button-danger p-button-outlined"
+                    [disabled]="true"
+                  ></button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5">No hay resultados que mostrar.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="form_eliminar_unidad"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="field col-12">
+    <p class="sm:text-sm md:text-base font-semibolds ml-2 text-900">
+      Indique la razón de su decisión al querer eliminar la unidad asignada a la
+      emergencia.
+    </p>
+    <span class="flex flex-column mt-2 p-input-icon-left">
+      <input
+        pInputText
+        type="text"
+        class="p-inputtext-sm sm:text-sm md:text-sm lg:text-base"
+        [(ngModel)]="dataEliminarUnidad.razonEliminacion"
+        pTooltip="Ejemplo: asignada por error, desperfecto mecánico, surgió una emergencia de mayor prioridad, etc."
+        tooltipEvent="focus"
+        tooltipPosition="right"
+        (input)="mostrarErrorRazonEliminacion = false"
+        (input)="minimoCaracteres = false"
+        (input)="limpiarEspacios()"
+        (input)="limpiarCaracteresEspeciales()"
+        required="true"
+      />
+      <!-- (input)="minimoCaracteres = false" -->
+      <i class="pi pi-pencil sm:text-sm md:text-sm lg:text-base text-900"></i>
+    </span>
+    <div class="text-red-600 mt-3" *ngIf="mostrarErrorRazonEliminacion">
+      Campo obligatorio
+    </div>
+    <div class="text-red-600 mt-3" *ngIf="minimoCaracteres">
+      Mínimo 15 caracteres
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="flex align-items-center justify-content-center gap-2">
+      <div>
+        <button
+          pButton
+          icon="pi pi-car"
+          severity="success"
+          label="Confirmar"
+          class="p-button-sm p-button-successs p-button-outlined"
+          (click)="btn_eliminar_unidad(dataEliminarUnidad)"
+        ></button>
+      </div>
+      <div>
+        <button
+          pButton
+          icon="pi pi-car"
+          severity="info"
+          label="Cancelar"
+          class="p-button-sm p-button-secondary p-button-outlined"
+          (click)="btn_eliminar_unidad_cancelar()"
+        ></button>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog
+  header=""
+  [(visible)]="form_asignrMaquinista"
+  [modal]="true"
+  [style]="{ width: '80vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="grid">
+    <div class="col-12">
+      <div
+        style="
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(190, 31, 45, 0.4) 40%,
+            rgba(0, 174, 239, 0.4) 60%
+          );
+        "
+        class="mb-0 mt-0"
+      ></div>
+      <div class="grid mt-0">
+        <div class="col-12 sm:col-6 md:col-8">
+          <p>
+            Seleccione el maquinista que ira a bordo de la unidad que
+            selecciono.
+          </p>
+        </div>
+        <div class="col-12 sm:col-6 md:col-4">
+          <div class="">
+            <p-button
+              [loading]="loading_unidad_guardada"
+              (click)="agregarMaquinista()"
+              label="Agregar"
+              icon="pi pi-save"
+              styleClass="p-button-sm p-button-info w-full p-button-rounded p-button-outlined sm:text-sm md:text-sm lg:text-sm"
+            ></p-button>
+          </div>
+        </div>
+      </div>
+      <p-table
+        [value]="maquinistas"
+        [(selection)]="empleadoSeleccionado"
+        dataKey="id"
+        styleClass="p-datatable-sm"
+        [globalFilterFields]="['nombresEmpleado', 'estadoEmpleado']"
+        [tableStyle]="{ 'min-width': '30rem' }"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th></th>
+            <th pSortableColumn="nombresEmpleado">
+              <div class="flex align-items-center justify-content-around">
+                <strong class="capitalize">Apellidos y Nombres</strong>
+                <p-sortIcon field="nombresEmpleado"></p-sortIcon>
+              </div>
+            </th>
+            <th pSortableColumn="estadoEmpleado">
+              <div class="flex align-items-center justify-content-around">
+                <strong class="capitalize">Estado</strong>
+                <p-sortIcon field="estadoEmpleado"></p-sortIcon>
+              </div>
+            </th>
+          </tr>
+          <tr>
+            <th></th>
+            <th>
+              <p-columnFilter
+                [showClearButton]="false"
+                [showMenu]="false"
+                type="text"
+                field="nombresEmpleado"
+              ></p-columnFilter>
+            </th>
+            <th></th>
+            <!-- <th>
+              <p-columnFilter [showClearButton]="false" [showMenu]="false"   type="text" field="estadoEmpleado"></p-columnFilter>
+            </th> -->
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-maquinista>
+          <tr>
+            <td>
+              <div *ngIf="maquinista.estadoEmpleado === 'Disponible'">
+                <p-tableRadioButton [value]="maquinista"></p-tableRadioButton>
+              </div>
+              <div *ngIf="maquinista.estadoEmpleado === 'Ocupado'">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="pi pi-ban"
+                  style="color: orange"
+                  pTooltip="No disponible"
+                  tooltipPosition="top"
+                  class="p-button-rounded p-button-text"
+                  [disabled]="true"
+                ></button>
+              </div>
+            </td>
+            <td>{{ maquinista.nombresEmpleado }}</td>
+            <td>
+              <div class="flex align-items-center justify-content-center gap-2">
+                <div *ngIf="maquinista.estadoEmpleado === 'Disponible'">
+                  <button
+                    pButton
+                    icon="pi pi-user"
+                    [label]="maquinista.estadoEmpleado"
+                    class="p-button-sm p-button-success p-button-outlined"
+                    [disabled]="true"
+                  ></button>
+                </div>
+                <div *ngIf="maquinista.estadoEmpleado === 'Ocupado'">
+                  <button
+                    pButton
+                    icon="pi pi-user-minus"
+                    [label]="maquinista.estadoEmpleado"
+                    class="p-button-sm p-button-danger p-button-outlined"
+                    [disabled]="true"
+                  ></button>
+                </div>
+              </div>
+            </td>
+            <!-- <td>{{maquinista.estadoEmpleado}}</td> -->
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5">No hay resultados que mostrar.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</p-dialog>

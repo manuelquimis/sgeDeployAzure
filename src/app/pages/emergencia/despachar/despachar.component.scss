@@ -1,0 +1,80 @@
+.conten-form {
+    // height: calc(100vh - 60rem);
+    right: 0px;
+    top: 0px;
+    // width: 100vh;
+}
+
+.popup {
+    background-color: #ea0505; /* Cambia al color que desees */
+  border-radius: 10px; /* Cambia al radio de borde que desees */
+}
+
+
+/* styles.css o styles.scss */
+.single-line-select {
+  // display: flex;
+  // flex-wrap: nowrap;
+  max-width: 100%;
+  // overflow-x: auto;
+  color: #ea0505;
+  background-color: #ea0505;
+}
+
+.single-line-select .p-dropdown-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-wrap: wrap;
+}
+
+/* styles.css o styles.scss */
+.full-width-select {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.full-width-select .p-dropdown-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 1;
+  max-width: 100%;
+}
+
+.full-width-select .p-dropdown-item {
+  flex-grow: 1;
+  max-width: calc(100% - 5rem); /* Ajusta según sea necesario */
+}
+
+
+
+
+
+
+
+
+:host ::ng-deep {
+  .speeddial-linear-demo {
+      .p-speeddial-direction-up {
+          left: calc(50% - 2rem);
+          bottom: 0;
+      }
+
+      .p-speeddial-direction-down {
+          left: calc(50% - 2rem);
+          top: 0;
+      }
+
+      .p-speeddial-direction-left {
+          right: 0;
+          top: calc(50% - 2rem);
+      }
+
+      .p-speeddial-direction-right {
+          left: 0;
+          top: calc(50% - 2rem);
+      }
+  }
+}

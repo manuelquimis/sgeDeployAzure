@@ -1,0 +1,159 @@
+<div
+  class="surface-section px-5 py-4 shadow-1 border-round"
+  style="min-height: calc(100vh - 9rem); position: relative"
+>
+  <div class="grid">
+    <div class="col-12">
+      <div class="mr-5 flex align-items-center flex-wrap m-2">
+        <i
+          class="fa-solid fa-id-card text-900 mr-2 sm:text-sm md:text-md lg:text-base"
+        ></i>
+        <span
+          class="capitalize font-bold text-900 sm:text-sm md:text-md lg:text-base xl:text-lg"
+          >Información</span
+        >
+        <strong
+          class="mr-1 ml-1 font-bold sm:text-sm md:text-md lg:text-base xl:text-lg"
+          style="color: red"
+          >|</strong
+        >
+        <span
+          class="capitalize font-medium text-900 sm:text-sm md:text-md lg:text-base xl:text-lg"
+          >Del Usuario</span
+        >
+      </div>
+      <p-divider></p-divider>
+    </div>
+    <div class="col-12 md:col-6 lg:col-6">
+      <div class="mb-0 flex justify-content-center align-items-center">
+        <div>
+          <p
+            class="mt-0 mb-0 sm:text-sm md:text-md lg:text-base xl:text-lg font-semibold text-900"
+          >
+            Datos Personal
+          </p>
+        </div>
+      </div>
+      <div
+        style="
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(190, 31, 45, 0.4) 40%,
+            rgba(0, 174, 239, 0.4) 60%
+          );
+        "
+        class="mb-5"
+      ></div>
+
+      <div
+        *ngIf="mostrarIndicadorCarga"
+        class="flex justify-content-center align-content-center flex-wrap"
+      >
+        <p-progressSpinner styleClass="w-8rem h-8rem"></p-progressSpinner>
+      </div>
+      <div
+        class="formgrid grid text-left"
+        *ngIf="mostrarIndicadorCarga === false"
+      >
+        <div class="field col-12 sm:col-6 md:col-6 lg:col-12 xl:col-12">
+          <strong class="sm:text-sm md:text-md lg:text-base ml-2 text-900"
+            >Nombres</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base font-medium text-900"
+              [value]="nombresUsuario"
+              [disabled]="true"
+            />
+            <i class="pi pi-id-card sm:text-sm md:text-md lg:text-base"></i>
+          </span>
+        </div>
+        <div class="field col-12 sm:col-6 md:col-6 lg:col-12 xl:col-12">
+          <strong class="sm:text-sm md:text-md lg:text-base ml-2 text-900"
+            >Apellidos</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base font-medium text-900"
+              [value]="apellidosUsuario"
+              [disabled]="true"
+            />
+            <i class="pi pi-id-card"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-6">
+      <div class="mb-0 flex justify-content-center align-items-center">
+        <div>
+          <p
+            class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg xl:text-lg font-semibold text-900"
+          >
+            Datos Institucional
+          </p>
+        </div>
+      </div>
+      <div
+        style="
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(190, 31, 45, 0.4) 40%,
+            rgba(0, 174, 239, 0.4) 60%
+          );
+        "
+        class="mb-5"
+      ></div>
+
+      <div
+        *ngIf="mostrarIndicadorCarga"
+        class="flex justify-content-center align-content-center flex-wrap"
+      >
+        <p-progressSpinner styleClass="w-8rem h-8rem"></p-progressSpinner>
+      </div>
+      <div
+        class="formgrid grid text-left"
+        *ngIf="mostrarIndicadorCarga === false"
+      >
+        <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+          <strong class="sm:text-sm md:text-md lg:text-base ml-2 text-900"
+            >Correo Electrónico</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base text-900"
+              [value]="emailUsuario"
+              [disabled]="true"
+            />
+            <i class="pi pi-at"></i>
+          </span>
+        </div>
+        <div class="field col-12 sm:col-6 md:col-6 lg:col-6">
+          <strong class="sm:text-sm md:text-md lg:text-base ml-2 text-900"
+            >Tipo de Usuario</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base text-900"
+              [value]="
+                tipoUsuario.charAt(0).toUpperCase() +
+                tipoUsuario.slice(1).toLowerCase()
+              "
+              [disabled]="true"
+            />
+            <i class="pi pi-sitemap"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

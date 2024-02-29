@@ -1,0 +1,30 @@
+
+$gutter: 1rem; //for primeflex grid system
+@import "assets/layout/styles/layout/layout.scss";
+
+/* PrimeNG */
+@import "../node_modules/primeng/resources/primeng.min.css";
+@import "../node_modules/primeflex/primeflex.scss";
+@import "../node_modules/primeicons/primeicons.css";
+
+/* Font Awesome*/
+@import "../node_modules/@fortawesome/fontawesome-free/css/all.css";
+@import "../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
+@import "../node_modules/@fortawesome/fontawesome-free/css/brands.css";
+@import "../node_modules/@fortawesome/fontawesome-free/css/brands.min.css";
+@import "../node_modules/@fortawesome/fontawesome-free/css/fontawesome.css";
+@import "../node_modules/@fortawesome/fontawesome-free/css/fontawesome.min.css";
+@import "../node_modules/@fortawesome/fontawesome-free/css/regular.css";
+@import "../node_modules/@fortawesome/fontawesome-free/css/regular.min.css";
+@import "../node_modules/@fortawesome/fontawesome-free/css/solid.css";
+@import "../node_modules/@fortawesome/fontawesome-free/css/solid.min.css";
+@import "../node_modules/@fortawesome/fontawesome-free/css/svg-with-js.css";
+@import "../node_modules/@fortawesome/fontawesome-free/css/svg-with-js.min.css";
+@import "../node_modules/@fortawesome/fontawesome-free/css/v5-font-face.css";
+@import "../node_modules/@fortawesome/fontawesome-free/css/v5-font-face.min.css";
+
+
+@import "~material-icons/iconfont/material-icons.css";
+
+
+

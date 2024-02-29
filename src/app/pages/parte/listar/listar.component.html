@@ -1,0 +1,1304 @@
+<div
+  class="surface-section px-5 py-4 shadow-1 border-round"
+  style="min-height: calc(100vh - 9rem); position: relative"
+>
+  <div class="grid">
+    <div class="col-12">
+      <div class="flex justify-content-between flex-wrap">
+        <div class="mr-5 flex align-items-center m-2">
+          <i
+            class="fa-solid fa-file-waveform mr-2 sm:text-sm md:text-md lg:text-base xl:text-lg text-900"
+          ></i>
+          <span
+            class="capitalize font-bold sm:text-sm md:text-md lg:text-base xl:text-lg text-900"
+            >Partes de Emergencias</span
+          >
+          <strong
+            class="mr-1 ml-1 font-bold sm:text-sm md:text-md lg:text-base xl:text-lg"
+            style="color: rgb(190, 31, 45)"
+            >|</strong
+          >
+          <span
+            class="capitalizee sm:text-sm md:text-md lg:text-base xl:text-lg text-900"
+          >
+            <p class="font-bold" style="color: rgb(0, 174, 239)">Atendidas</p>
+          </span>
+          
+        </div>
+        <div class="flex align-items-center justify-content-center gap-0">
+          <p-chip styleClass="pl-0 pr-0" *ngIf="rolUsuario === 'DELTA'">
+            <span class="ml-3 mr-2 font-semibold sm:text-sm md:text-md lg:text-base xl:text-lg text-900">Reporte General</span>
+          
+            <span class="w-3rem h-2rem flex align-items-center justify-content-center">
+              <button
+              pButton
+              pTooltip="Visualizar"
+              tooltipPosition="top"
+              icon="fa-regular fa-file-pdf fa-xl"
+              class="p-button-rounded p-button-text p-button-danger mr-0"
+              style="color: white; background-color: rgb(190, 31, 45)"
+              (click)="generarReporteGeneral()" 
+            ></button>
+            </span>
+    </p-chip>  
+        </div>
+      </div>
+      <p-divider></p-divider>
+    </div>
+    <div class="col-12">
+      <div class="grid">
+        <div class="col-12">
+          <div class="ml-0 mr-0">
+            <div
+              *ngIf="mostrarIndicadorCarga"
+              class="flex justify-content-center align-content-center flex-wrap"
+            >
+              <p-progressSpinner styleClass="w-8rem h-8rem"></p-progressSpinner>
+            </div>
+            <p-table
+              *ngIf="mostrarIndicadorCarga === false"
+              #dt2
+              [value]="partes_emergencias"
+              dataKey="uuidEmergencia"
+              [rows]="5"
+              [showCurrentPageReport]="true"
+              [rowsPerPageOptions]="[5, 10, 25, 50]"
+              [paginator]="true"
+              styleClass="p-datatable-sm"
+              selectionMode="single"
+              [loading]="loading"
+              currentPageReportTemplate=" {last} registros de {totalRecords}"
+              [tableStyle]="{ 'min-width': '50rem' }"
+              [globalFilterFields]="[
+                'fechaDespacho',
+                'numeroParte',
+                'desEmergencia',
+                'direccion'
+              ]"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th style="width: 15%" pSortableColumn="fechaDespacho">
+                    <div class="flex align-items-center justify-content-around">
+                      <strong class="capitalize">Fecha</strong>
+                      <p-sortIcon field="fechaDespacho"></p-sortIcon>
+                    </div>
+                  </th>
+                  <th style="width: 15%" pSortableColumn="numeroParte">
+                    <div class="flex align-items-center justify-content-around">
+                      <strong class="capitalize">N° Parte</strong>
+                      <p-sortIcon field="numeroParte"></p-sortIcon>
+                    </div>
+                  </th>
+                  <th style="width: 15%" pSortableColumn="descripcionP">
+                    <div class="flex align-items-center justify-content-around">
+                      <span class="capitalize">Tipo</span>
+                      <p-sortIcon field="descripcionP"></p-sortIcon>
+                    </div>
+                  </th>
+                  <th style="width: 5%" pSortableColumn="codigoH">
+                    <div class="flex align-items-center justify-content-around">
+                      <span class="capitalize">Código</span>
+                      <p-sortIcon field="codigoH"></p-sortIcon>
+                    </div>
+                  </th>
+                  <th style="width: 5%" pSortableColumn="descripcionH">
+                    <div class="flex align-items-center justify-content-around">
+                      <span class="capitalize">Descripción</span>
+                      <p-sortIcon field="descripcionH"></p-sortIcon>
+                    </div>
+                  </th>
+                  <th style="width: 25%" pSortableColumn="direccion">
+                    <div class="flex align-items-center justify-content-around">
+                      <strong class="capitalize">Dirección</strong>
+                      <p-sortIcon field="direccion"></p-sortIcon>
+                    </div>
+                  </th>
+                  <th style="width: 30%">
+                    <!-- <div class="flex justify-content-center align-items-center">
+                      <button
+                        pButton
+                        pTooltip="Reporte general"
+                        tooltipPosition="top"
+                        icon="fa-regular fa-file-pdf fa-lg"
+                        class="p-button-rounded p-button-text p-button-danger mr-2"
+                        style="color: white; background-color: rgb(190, 31, 45)"
+                        (click)="generarReporteGeneral()"
+                      ></button>
+                    </div> -->
+                  </th>
+                </tr>
+                <tr>
+                  <th>
+                    <p-columnFilter
+                      [showClearButton]="false"
+                      [showMenu]="false"
+                      type="text"
+                      field="fechaDespacho"
+                    ></p-columnFilter>
+                  </th>
+                  <th>
+                    <p-columnFilter
+                      type="text"
+                      [showClearButton]="false"
+                      [showMenu]="false"
+                      field="numeroParte"
+                    ></p-columnFilter>
+                  </th>
+                  <th>
+                    <p-columnFilter
+                      type="text"
+                      [showClearButton]="false"
+                      [showMenu]="false"
+                      field="descripcionP"
+                    ></p-columnFilter>
+                  </th>
+                  <th>
+                    <p-columnFilter
+                      type="text"
+                      [showClearButton]="false"
+                      [showMenu]="false"
+                      field="codigoH"
+                    ></p-columnFilter>
+                  </th>
+                  <th>
+                    <p-columnFilter
+                      type="text"
+                      [showClearButton]="false"
+                      [showMenu]="false"
+                      field="descripcionH"
+                    ></p-columnFilter>
+                  </th>
+                  <th>
+                    <p-columnFilter
+                      type="text"
+                      [showClearButton]="false"
+                      [showMenu]="false"
+                      field="direccion"
+                    ></p-columnFilter>
+                  </th>
+                  <th></th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-item>
+                <tr>
+                  <td>
+                    <span>{{ item.fechaDespacho }}</span>
+                  </td>
+                  <td>
+                    <span>{{ item.numeroParte }}</span>
+                  </td>
+                  <td>
+                    <span>{{ item.descripcionP }}</span>
+                  </td>
+                  <td>
+                    <span>{{ item.codigoH }}</span>
+                  </td>
+                  <td>
+                    <span>{{ item.descripcionH }}</span>
+                  </td>
+                  <td>
+                    <span>{{ item.direccion }}</span>
+                  </td>
+                  <td>
+                    <div
+                      class="flex align-items-center justify-content-center flex-wrap gap-3"
+                    >
+                    <p-button
+                    *ngIf="rolUsuario === 'DELTA' || rolUsuario === 'CONSULTA'"
+                    (click)="generarReporteRadioOperador(item)"
+                        [loading]="loadingParteRadioOperador"
+                        label="Radio-Operador"
+                        styleClass="p-button-sm p-button-rounded p-button-outlined p-button-secondary text-xs"
+                      ></p-button>
+                      <p-button
+                    (click)="generarReporteComandante(item)"
+                        [loading]="loadingParteCmdte"
+                        label="Cmdt-Emg"
+                        styleClass="p-button-sm p-button-rounded p-button-outlined p-button-help text-xs"
+                      ></p-button>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="5">Ningún registro coincide con su filtro.</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Parte Cmdte -->
+<p-dialog
+  [(visible)]="mostrarParteCmdte"
+  [modal]="true"
+  [style]="{ width: '70vw' }"
+  [draggable]="false"
+  [resizable]="false"
+  [maximizable]="true"
+  appendTo="body"
+>
+  <div class="md:border-double border-primary-900 sm:m-0 lg:p-7 sm:p-3">
+    <div class="border-300 border-top-2 w-full mb-0 md:mb-3"></div>
+    <div class="grid">
+      <div class="col-12 sm:col-0 md:col-0 lg:col-1"></div>
+      <div class="col-10 sm:col-8 md:col-10 lg:col-10">
+        <div class="flex justify-content-center align-items-center">
+          <p
+            class="text-center text-sm sm:text-md md:text-lg font-bold text-900 uppercase"
+          >
+            Benemérito Cuerpo de Bomberos de Manta<br />
+          </p>
+        </div>
+        <div class="flex justify-content-center align-items-center">
+          <p
+            class="text-center text-xs sm:text-md lg:text-lg font-bold text-900 uppercase"
+          >
+            Abnegación y Disciplina
+          </p>
+        </div>
+        <p
+          class="text-center text-xs sm:text-md lg:text-lg font-bold text-900 uppercase"
+        >
+          Partes de Emergencias
+        </p>
+      </div>
+      <div class="col-2 sm:col-4 md:col-2 lg:col-1">
+        <div class="flex justify-content-center align-items-center">
+          <img
+            src="../../../../assets/layout/images/logo_rojo.svg"
+            alt=""
+            style="width: 4rem"
+            class="align-items-center w-3rem sm:w-4rem"
+          />
+        </div>
+      </div>
+      <div class="border-300 border-top-2 w-full"></div>
+    </div>
+
+    <div class="grid mt-3 mb-3">
+      <div class="col-12 md:col-6 lg:col-6">
+        <ul class="list-none p-0 m-0">
+          <li class="flex align-items-center flex-wrap">
+            <div
+              class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+            >
+              Número de Parte:
+            </div>
+            <div
+              class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+            >
+              {{ detalles_parte_cmdt?.numeroParte }}
+            </div>
+          </li>
+
+          <li class="flex align-items-center flex-wrap">
+            <div
+              class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+            >
+              Código Emergencia:
+            </div>
+            <div
+              class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+            >
+              ({{ detalles_parte_cmdt?.codigoH }})
+              {{ detalles_parte_cmdt?.descripcionP }}
+              {{ detalles_parte_cmdt?.descripcionH }}
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-12 md:col-6 lg:col-6">
+        <ul class="list-none p-0 m-0">
+          <li class="flex align-items-center flex-wrap">
+            <div
+              class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+            >
+              Fecha Emergencia:
+            </div>
+            <div
+              class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+            >
+              {{ detalles_parte_cmdt?.fechaDespacho }}
+            </div>
+          </li>
+          <li class="flex align-items-center flex-wrap">
+            <div
+              class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+            >
+              Forma de Aviso:
+            </div>
+            <div
+              class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+            >
+              {{ detalles_parte_cmdt?.formaAviso }}
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-12 md:col-12 lg:col-12">
+        <ul class="list-none p-0 m-0">
+          <li class="flex align-items-center flex-wrap">
+            <div
+              class="text-900 sm:w-4 md:w-3 sm:text-sm md:text-md lg:text-lg font-medium"
+            >
+              Dirección:
+            </div>
+            <div
+              class="text-600 pl-2 sm:pl-0 sm:w-8 md:w-9 sm:text-sm md:text-md lg:text-lg"
+            >
+              {{ detalles_parte_cmdt?.direccion }}
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-300 border-top-2"></div>
+
+    <div class="grid mt-5">
+      <div class="col-12 sm:col-12 md:col-7 lg:col-8">
+        <div class="mb-0 flex justify-content-center align-items-center">
+          <div>
+            <p
+              class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg font-semibold text-900"
+            >
+              Datos del Afectado o Representante Legal
+            </p>
+          </div>
+        </div>
+        <div class="border-300 border-top-2 mt-2"></div>
+        <div class="mt-2">
+          <ul
+            *ngFor="let detalle_afectado of detalle_afectados"
+            class="list-none p-0 m-0 mt-2"
+          >
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                Nombres Completo:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                {{ detalle_afectado.nombresAfectado }}
+              </div>
+            </li>
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                Identificación:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                {{ detalle_afectado.ciAfectado }}
+              </div>
+            </li>
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                Teléfono:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                {{ detalle_afectado.telefonoAfectado }}
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-12 sm:col-12 md:col-5 lg:col-4">
+        <div class="mb-0 flex justify-content-center align-items-center">
+          <div>
+            <p
+              class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg font-semibold text-900"
+            >
+              Causas de la Emergencia
+            </p>
+          </div>
+        </div>
+        <div class="border-300 border-top-2 mt-2"></div>
+        <div class="mt-2">
+          <ul class="list-none p-0 m-0 mt-2">
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-1 md:w-1 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                R:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                {{ detalles_parte_cmdt?.causaDeEmergencia }}
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-12 sm:col-12 md:col-12 lg:col-12">
+        <div class="mb-0 flex justify-content-center align-items-center">
+          <div>
+            <p
+              class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg font-semibold text-900"
+            >
+              Victimas
+            </p>
+          </div>
+        </div>
+        <div class="border-300 border-top-2 mt-2"></div>
+        <div class="mt-2">
+          <p-table [value]="detalle_victimas" styleClass="p-datatable-sm">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 50%">
+                  <div class="flex align-items-center">
+                    <span
+                      class="text-900 sm:text-sm md:text-md lg:text-lg font-medium"
+                      >Nombres</span
+                    >
+                  </div>
+                </th>
+                <th style="width: 10%">
+                  <div class="flex align-items-center">
+                    <span
+                      class="text-900 sm:text-sm md:text-md lg:text-lg font-medium"
+                      >Identificacion</span
+                    >
+                  </div>
+                </th>
+                <th style="width: 10%">
+                  <div class="flex align-items-center">
+                    <strong
+                      class="text-900 sm:text-sm md:text-md lg:text-lg font-medium"
+                      >Procedimiento
+                    </strong>
+                  </div>
+                </th>
+                <th style="width: 30%">
+                  <div class="flex align-items-center">
+                    <span
+                      class="text-900 sm:text-sm md:text-md lg:text-lg font-medium"
+                      >Casa Médica</span
+                    >
+                  </div>
+                </th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-item>
+              <tr>
+                <td>
+                  <div class="flex align-items-center">
+                    <span class="sm:text-sm md:text-md lg:text-lg text-600">{{
+                      item.nombresVictima
+                    }}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="flex align-items-center">
+                    <span class="sm:text-sm md:text-md lg:text-base text-600">{{
+                      item.ciVictima
+                    }}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="flex align-items-center">
+                    <span class="sm:text-sm md:text-md lg:text-base text-600">{{
+                      item.procedimiento
+                    }}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="flex align-items-center">
+                    <span class="sm:text-sm md:text-md lg:text-base text-600">{{
+                      item.casaMedica
+                    }}</span>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid mt-5">
+      <div class="col-12 sm:col-6 md:col-6 lg:col-4 mb-6">
+        <div class="mb-0 flex justify-content-center align-items-center">
+          <div>
+            <p
+              class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg font-semibold text-900"
+            >
+              Daños Materiales
+            </p>
+          </div>
+        </div>
+        <div class="border-300 border-top-2 mt-2"></div>
+        <div class="mt-2">
+          <ul class="list-none p-0 m-0 mt-2">
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-1 md:w-1 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                R:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                {{ detalles_parte_cmdt?.danoMateriales }}
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-12 sm:col-6 md:col-6 lg:col-4 mb-6">
+        <div class="mb-0 flex justify-content-center align-items-center">
+          <div>
+            <p
+              class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg font-semibold text-900"
+            >
+              Unidades Presente
+            </p>
+          </div>
+        </div>
+        <div class="border-300 border-top-2 mt-2"></div>
+        <div class="mt-2">
+          <ul class="list-none p-0 m-0 mt-2">
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-1 md:w-1 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                R:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                <div
+                  *ngFor="let nombresUnidades of nombresUnidadesT"
+                  class="pr-2"
+                >
+                  {{ nombresUnidades }}
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-12 sm:col-6 md:col-6 lg:col-4 mb-6">
+        <div class="mb-0 flex justify-content-center align-items-center">
+          <div>
+            <p
+              class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg font-semibold text-900"
+            >
+              Personal Presente
+            </p>
+          </div>
+        </div>
+        <div class="border-300 border-top-2 mt-2"></div>
+        <div class="mt-2">
+          <ul class="list-none p-0 m-0 mt-2">
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-1 md:w-1 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                R:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                {{ detalles_parte_cmdt?.personalPresente }}
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-12 sm:col-6 md:col-6 lg:col-4 mb-6">
+        <div class="mb-0 flex justify-content-center align-items-center">
+          <div>
+            <p
+              class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg font-semibold text-900"
+            >
+              Apoyo Requerido
+            </p>
+          </div>
+        </div>
+        <div class="border-300 border-top-2 mt-2"></div>
+        <div class="mt-2">
+          <ul class="list-none p-0 m-0 mt-2">
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-1 md:w-1 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                R:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                {{ detalles_parte_cmdt?.apoyoRequerido }}
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-12 sm:col-12 md:col-12 lg:col-8">
+        <div class="mb-0 flex justify-content-center align-items-center">
+          <div>
+            <p
+              class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg font-semibold text-900"
+            >
+              Novedades
+            </p>
+          </div>
+        </div>
+        <div class="border-300 border-top-2 mt-2"></div>
+        <ul class="list-none p-0 m-0">
+          <li class="flex align-items-center flex-wrap">
+            <div
+              class="text-900 sm:w-1 md:w-1 sm:text-sm md:text-md lg:text-lg font-medium"
+            >
+              R:
+            </div>
+            <div
+              class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+            >
+              {{ detalles_parte_cmdt?.observacionCmdt }}
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grid mt-8">
+      <div class="col-12 md:col-6 lg:col-4">
+        <p>
+          {{ detalles_parte_cmdt?.nombresCmdt }}
+          {{ detalles_parte_cmdt?.apellidosCmdt }}
+        </p>
+        <p-divider> </p-divider>
+        <div class="mb-0 flex justify-content-center align-items-center">
+          <div>
+            <p
+              class="mt-0 mb-0 text-sm sm:text-sm md:text-md lg:text-lg font-medium text-900"
+            >
+              Cmdte. de Operaciones <br />
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 md:col-6 lg:col-4">
+        <p-divider></p-divider>
+        <div class="mb-0 flex justify-content-center align-items-center">
+          <div>
+            <p
+              class="mt-0 mb-0 text-sm sm:text-sm md:text-md lg:text-lg font-medium text-900"
+            >
+              Visto Bno. Primer Jefe
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 md:col-6 lg:col-4">
+        <p-divider></p-divider>
+        <div class="mb-0 flex justify-content-center align-items-center">
+          <div>
+            <p
+              class="mt-0 mb-0 text-sm sm:text-sm md:text-md lg:text-lg font-medium text-900"
+            >
+              2do. Cmdte. de Operaciones
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<!-- Parte Radio Operador -->
+<p-dialog
+  [(visible)]="mostrarParteRadioOperador"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [maximizable]="true"
+  appendTo="body"
+  [style]="{ width: '70vw' }"
+>
+  <div class="md:border-double border-primary-900 sm:m-0 lg:p-7 sm:p-3">
+    <div class="border-300 border-top-2 w-full mb-0 md:mb-3"></div>
+    <div class="grid">
+      <div class="col-12 sm:col-0 md:col-0 lg:col-1"></div>
+      <div class="col-10 sm:col-8 md:col-10 lg:col-10">
+        <div class="flex justify-content-center align-items-center">
+          <p
+            class="text-center text-sm sm:text-md md:text-lg font-bold text-900 uppercase"
+          >
+            Benemérito Cuerpo de Bomberos de Manta<br />
+          </p>
+        </div>
+        <div class="flex justify-content-center align-items-center">
+          <p
+            class="text-center text-xs sm:text-sm lg:text-md font-semibold text-900 uppercase"
+          >
+            Dirección de Prevención de Incendios - B2
+          </p>
+        </div>
+        <p
+          class="text-center text-xs sm:text-sm lg:text-md font-semibold text-900 uppercase"
+        >
+          Departamento de Radio Operadores
+        </p>
+      </div>
+      <div class="col-2 sm:col-4 md:col-2 lg:col-1">
+        <div class="flex justify-content-center align-items-center">
+          <img
+            src="../../../../assets/layout/images/logo_rojo.svg"
+            alt=""
+            style="width: 4rem"
+            class="align-items-center w-3rem sm:w-4rem"
+          />
+        </div>
+      </div>
+      <div class="border-300 border-top-2 w-full"></div>
+    </div>
+
+    <div class="grid mt-1">
+      <div class="col-12 md:col-6 lg:col-6">
+        <ul class="list-none p-0 m-0">
+          <li class="flex align-items-center flex-wrap">
+            <div
+              class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+            >
+              Número de Parte:
+            </div>
+            <div
+              class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+            >
+              {{ detalles_parte_cmdt?.numeroParte }}
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="col-12 md:col-6 lg:col-6">
+        <ul class="list-none p-0 m-0">
+          <li class="flex align-items-center flex-wrap">
+            <div
+              class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+            >
+              Fecha Emergencia:
+            </div>
+            <div
+              class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+            >
+              {{ detalles_parte_cmdt?.fechaDespacho }}
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-300 border-top-2"></div>
+
+    <div class="grid mt-5">
+      <div class="col-12 md:col-12 lg:col-12 mb-5">
+        <div class="mb-0 flex justify-content-center align-items-center">
+          <div>
+            <p
+              class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg font-semibold text-900"
+            >
+              Detalle Básico
+            </p>
+          </div>
+        </div>
+        <div class="border-300 border-top-2 mt-2"></div>
+
+        <div class="mt-2">
+          <ul class="list-none p-0 m-0 mt-2">
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                Hora de Llamada:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                {{ detalles_parte_cmdt?.horaLlamada }}
+              </div>
+            </li>
+          </ul>
+          <ul class="list-none p-0 m-0 mt-2">
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                Hora de despacho:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                {{ detalles_parte_cmdt?.horaDespacho }}
+              </div>
+            </li>
+          </ul>
+          <ul class="list-none p-0 m-0 mt-2">
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                Dirección:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                {{ detalles_parte_cmdt?.direccion }}
+              </div>
+            </li>
+          </ul>
+          <ul class="list-none p-0 m-0 mt-2">
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                Tipo de Emergencia:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                {{ detalles_parte_cmdt?.descripcionP }}
+                {{ detalles_parte_cmdt?.descripcionH }} ({{
+                  detalles_parte_cmdt?.codigoH
+                }})
+              </div>
+            </li>
+          </ul>
+          <div class="border-300 border-top-1 mt-2"></div>
+          <ul class="list-none p-0 m-0 mt-2">
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                Paciente :
+              </div>
+
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                <ul
+                  *ngFor="let victima of detalle_victimas"
+                  class="list-none p-0 m-0"
+                >
+                  <li class="flex align-items-center flex-wrap">
+                    {{ victima.nombresVictima }}
+                  </li>
+                  <li class="flex align-items-center flex-wrap">
+                    {{ victima.ciVictima }}
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+          <div class="border-300 border-top-1 mt-2"></div>
+          <ul class="list-none p-0 m-0 mt-2">
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                Propietario:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                <ul
+                  *ngFor="let afectado of detalle_afectados"
+                  class="list-none p-0 m-0"
+                >
+                  <!-- <div class="border-300 border-top-2 mt-2"></div> -->
+
+                  <li class="flex align-items-center flex-wrap">
+                    {{ afectado.nombresAfectado }}
+                  </li>
+                  <li class="flex align-items-center flex-wrap">
+                    {{ afectado.ciAfectado }}
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+          <!-- <ul class="list-none p-0 m-0 mt-2">
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                Identificación:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                1302224710
+              </div>
+            </li>
+          </ul> -->
+          <div class="border-300 border-top-1 mt-2"></div>
+          <ul class="list-none p-0 m-0 mt-2">
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                Datos Vivienda/Local:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                {{ detalles_parte_cmdt?.viviendaLocal }}
+              </div>
+            </li>
+          </ul>
+          <ul class="list-none p-0 m-0 mt-2">
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                Presencia Policial:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                {{ detalles_parte_cmdt?.presenciaPolicial }}
+              </div>
+            </li>
+          </ul>
+          <ul class="list-none p-0 m-0 mt-2">
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                Alertante:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                {{ detalles_parte_cmdt?.nombresCompletoSolicitante }}
+              </div>
+            </li>
+          </ul>
+          <ul class="list-none p-0 m-0 mt-2">
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                Teléfono:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                {{ detalles_parte_cmdt?.telefonoSolicitante }}
+              </div>
+            </li>
+          </ul>
+          <ul class="list-none p-0 m-0 mt-2">
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                Es Confirmada:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                {{ detalles_parte_cmdt?.esConfirmada }}
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-12 sm:col-12 md:col-12 lg:col-12 mb-5">
+        <div class="mb-0 flex justify-content-center align-items-center">
+          <div>
+            <p
+              class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg font-semibold text-900"
+            >
+              Respuesta de Vehículos
+            </p>
+          </div>
+        </div>
+        <div class="border-300 border-top-2 mt-2"></div>
+        <div class="mt-2">
+          <p-table [value]="detalle_unidades" styleClass="p-datatable-sm">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="min-width: 0rem">
+                  <div class="flex align-items-center">
+                    <span
+                      class="text-900 sm:text-sm md:text-sm lg:text-lg font-medium"
+                      >Conductor</span
+                    >
+                  </div>
+                </th>
+                <th style="min-width: 0rem">
+                  <div class="flex align-items-center">
+                    <span
+                      class="text-900 sm:text-sm md:text-sm lg:text-lg font-medium"
+                      >Unidad</span
+                    >
+                  </div>
+                </th>
+                <th style="min-width: 0rem">
+                  <div class="flex align-items-center">
+                    <strong
+                      class="text-900 sm:text-sm md:text-sm lg:text-lg font-medium"
+                      >H. Llegada Emergencia</strong
+                    >
+                  </div>
+                </th>
+                <!-- <th style="min-width: 0rem">
+                  <div class="flex align-items-center">
+                    <span
+                      class="text-900 sm:text-sm md:text-sm lg:text-lg font-medium"
+                      >H. Casa Médica</span
+                    >
+                  </div>
+                </th> -->
+                <th style="min-width: 0rem">
+                  <div class="flex align-items-center">
+                    <span
+                      class="text-900 sm:text-sm md:text-sm lg:text-lg font-medium"
+                      >Trabajo Terminado</span
+                    >
+                  </div>
+                </th>
+                <th style="min-width: 0rem">
+                  <div class="flex align-items-center">
+                    <span
+                      class="text-900 sm:text-sm md:text-sm lg:text-lg font-medium"
+                      >H. Entrada</span
+                    >
+                  </div>
+                </th>
+                <th style="min-width: 0rem">
+                  <div class="flex align-items-center">
+                    <span
+                      class="text-900 sm:text-sm md:text-sm lg:text-lg font-medium"
+                      >Km Salida</span
+                    >
+                  </div>
+                </th>
+                <th style="min-width: 0rem">
+                  <div class="flex align-items-center">
+                    <span
+                      class="text-900 sm:text-sm md:text-sm lg:text-lg font-medium"
+                      >Km Entrada</span
+                    >
+                  </div>
+                </th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-item>
+              <tr>
+                <td>
+                  <div class="flex align-items-center">
+                    <span class="sm:text-sm md:text-md lg:text-lg text-600">{{
+                      item.nombresMaquinista
+                    }}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="flex align-items-center">
+                    <span class="sm:text-sm md:text-md lg:text-lg text-600">{{
+                      item.nombreUnidad
+                    }}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="flex align-items-center">
+                    <span class="sm:text-sm md:text-md lg:text-lg text-600">{{
+                      item.horaLlegadaEmergencia
+                    }}</span>
+                  </div>
+                </td>
+                <!-- <td>
+                  <div class="flex align-items-center">
+                    <span class="sm:text-sm md:text-md lg:text-lg text-600">{{
+                      item.hCasaMedica
+                    }}</span>
+                  </div>
+                </td> -->
+                <td>
+                  <div class="flex align-items-center">
+                    <span class="sm:text-sm md:text-md lg:text-lg text-600">{{
+                      item.horaTrabajoTerminado
+                    }}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="flex align-items-center">
+                    <span class="sm:text-sm md:text-md lg:text-lg text-600">{{
+                      item.horaLlegadaEstacion
+                    }}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="flex align-items-center">
+                    <span class="sm:text-sm md:text-md lg:text-lg text-600">{{
+                      item.kmSalida
+                    }}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="flex align-items-center">
+                    <span class="sm:text-sm md:text-md lg:text-lg text-600">{{
+                      item.kmEntrada
+                    }}</span>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid mt-5">
+      <div class="col-12">
+        <div class="mb-0 flex justify-content-center align-items-center">
+          <div>
+            <p
+              class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg font-semibold text-900"
+            >
+              Personal que Acuden a la Emergencia
+            </p>
+          </div>
+        </div>
+        <div class="border-300 border-top-2 mt-2"></div>
+
+        <div class="mt-2">
+          <ul class="list-none p-0 m-0 mt-2">
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                Comandante de Emergencia:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                {{ detalles_parte_cmdt?.nombresCmdt }}
+              </div>
+            </li>
+          </ul>
+          <ul class="list-none p-0 m-0 mt-2">
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                Novedades:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                {{ detalles_parte_cmdt?.observacionCmdt }}
+              </div>
+            </li>
+          </ul>
+          <ul class="list-none p-0 m-0 mt-2">
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                Personal de Apoyo:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                {{ detalles_parte_cmdt?.personalPresente }}
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid mt-5">
+      <div class="col-12">
+        <div class="mb-0 flex justify-content-center align-items-center">
+          <div>
+            <p
+              class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg font-semibold text-900"
+            >
+              Radio Operador
+            </p>
+          </div>
+        </div>
+        <div class="border-300 border-top-2 mt-2"></div>
+
+        <div class="mt-2">
+          <ul class="list-none p-0 m-0 mt-2">
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                Nombres completo:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg"
+              >
+                {{ detalles_parte_cmdt?.nombresRadioOperador }}
+                {{ detalles_parte_cmdt?.apellidosRadioOperador }}
+              </div>
+            </li>
+          </ul>
+          <ul class="list-none p-0 m-0 mt-2">
+            <li class="flex align-items-center flex-wrap">
+              <div
+                class="text-900 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg font-medium"
+              >
+                Novedades:
+              </div>
+              <div
+                class="text-600 pl-2 sm:pl-0 sm:w-6 md:w-6 sm:text-sm md:text-md lg:text-lg ml-0 sm:ml-5 md:ml-0"
+              >
+                {{ detalles_parte_cmdt?.observacionRadioOperador }}
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid mt-8">
+      <div class="col-12 sm:col-2 md:col-3 lg:col-4"></div>
+      <div class="col-12 sm:col-8 md:col-6 lg:col-4">
+        <p-divider></p-divider>
+        <div class="mb-0 flex justify-content-center align-items-center">
+          <div>
+            <p
+              class="mt-0 mb-0 text-sm sm:text-sm md:text-md font-medium text-900"
+            >
+              María Fernanda Merchán Sánchez
+            </p>
+
+            <p class="text-center font-bold text-sm text-900">
+              Responsabilidad
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 sm:col-2 md:col-3 lg:col-4"></div>
+    </div>
+  </div>
+</p-dialog>

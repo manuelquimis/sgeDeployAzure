@@ -1,0 +1,1542 @@
+<div
+  class="surface-section px-5 py-4 shadow-1 border-round flex justify-content-center align-content-center flex-wrap"
+  style="min-height: calc(100vh - 9rem); position: relative"
+  *ngIf="mostrarIndicadorCarga"
+>
+  <p-progressSpinner styleClass="w-8rem h-8rem"></p-progressSpinner>
+</div>
+
+<div
+  class="surface-section px-5 py-4 shadow-1 border-round"
+  style="min-height: calc(100vh - 9rem); position: relative"
+  *ngIf="mostrarIndicadorCarga === false"
+>
+  <div class="grid">
+    <div class="col-12">
+      <div class="flex justify-content-between flex-wrap">
+        <div class="mr-5 flex align-items-center m-2">
+          <i
+            class="fa-solid fa-file-waveform mr-2 sm:text-sm md:text-md lg:text-base xl:text-lg text-900"
+          ></i>
+          <span
+            class="capitalize font-bold sm:text-sm md:text-md lg:text-base xl:text-lg text-900"
+            >Número de Parte</span
+          >
+          <strong
+            class="mr-1 ml-1 font-bold sm:text-sm md:text-md lg:text-base xl:text-lg"
+            style="color: rgb(190, 31, 45)"
+            >|</strong
+          >
+          <span
+            class="capitalizee sm:text-sm md:text-md lg:text-base xl:text-lg text-900"
+          >
+            <p class="font-bold" style="color: rgb(0, 174, 239)">
+              {{ detalleEmergencia.numeroParte }}
+            </p>
+          </span>
+        </div>
+        <div class="flex align-items-center justify-content-center gap-2">
+          <p-button
+            label=""
+            styleClass="p-button-info p-button-sm p-button-rounded p-button-outlined"
+            (onClick)="btnVolver()"
+            icon="pi pi-arrow-left"
+            [loading]="loadingVolver"
+            pTooltip="Volver al listado de partes"
+            tooltipPosition="top"
+          ></p-button>
+          <p-button
+            label="Guardar"
+            styleClass="p-button-info p-button-sm p-button-rounded p-button-outlined"
+            (onClick)="btnGuardarVolverParte()"
+            [loading]="loadingGuardarVolverParte"
+            *ngIf="mostarBtnGuardar"
+          ></p-button>
+          <p-button
+            label="Finalizar"
+            styleClass="p-button-success p-button-sm p-button-rounded"
+            [loading]="loadingFinalizarParte"
+            (onClick)="btnFinalizarParte(detalleEmergencia)"
+            *ngIf="mostrarBtnFinalizar"
+          ></p-button>
+        </div>
+      </div>
+      <p-divider></p-divider>
+    </div>
+    <!-- <div class="col-12 sm:col-5 md:col-6 lg:col-8">
+      <div class="mr-5 flex align-items-center flex-wrap m-2">
+        <span
+          class="capitalize font-bold sm:text-sm md:text-md lg:text-base xl:text-lg text-900"
+          >Parte de Emergencia</span
+        >
+        <strong
+          class="mr-1 ml-1 font-bold sm:text-sm md:text-md lg:text-base xl:text-lg"
+          style="color: red"
+          >|</strong
+        >
+        <span
+          pTooltip="Identificador único"
+          tooltipPosition="top"
+          class="capitalize font-medium sm:text-sm md:text-md lg:text-base xl:text-lg text-900"
+          >{{ detalleEmergencia.numeroParte }}</span
+        >
+      </div>
+      <p-divider></p-divider>
+    </div> -->
+    <!-- <div class="col-12 sm:col-7 md:col-6 lg:col-4">
+      <div
+        class="flex align-items-center justify-content-center flex-wrap gap-2"
+      >
+        <p-button
+          label=""
+          styleClass="p-button-info p-button-sm p-button-rounded p-button-outlined"
+          (onClick)="btnVolver()"
+          icon="pi pi-arrow-left"
+          [loading]="loadingVolver"
+          pTooltip="Volver al listado de partes"
+          tooltipPosition="top"
+        ></p-button>
+        <p-button
+          label="Guardar"
+          styleClass="p-button-info p-button-sm p-button-rounded p-button-outlined"
+          (onClick)="btnGuardarVolverParte()"
+          [loading]="loadingGuardarVolverParte"
+          *ngIf="mostarBtnGuardar"
+        ></p-button>
+        <p-button
+          label="Finalizar"
+          styleClass="p-button-success p-button-sm p-button-rounded"
+          [loading]="loadingFinalizarParte"
+          (onClick)="btnFinalizarParte(detalleEmergencia)"
+          *ngIf="mostrarBtnFinalizar"
+        ></p-button>
+      </div>
+    </div> -->
+    <div class="col-12">
+      <div class="mb-0 flex justify-content-center align-items-center">
+        <div>
+          <p
+            class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg xl:text-xl font-semibold text-900"
+          >
+            Datos Generales
+          </p>
+        </div>
+      </div>
+      <!-- <div
+        style="
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(190, 31, 45, 0.4) 40%,
+            rgba(0, 174, 239, 0.4) 60%
+          );
+        "
+        class="mb-5"
+      ></div> -->
+      <div
+        style="
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(190, 31, 45, 1) 40%,
+            rgba(0, 174, 239, 1) 60%
+          );
+        "
+        class="mb-5"
+      ></div>
+
+      <div class="formgrid grid text-left">
+        <div class="field col-12 sm:col-12 md:col-8">
+          <strong class="sm:text-sm md:text-md lg:text-base text-900 ml-2"
+            >Dirección</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [disabled]="true"
+              [(ngModel)]="detalleEmergencia.direccion"
+            />
+            <i class="pi pi-unlock"></i>
+          </span>
+        </div>
+        <div class="field col-12 sm:col-6 md:col-4">
+          <strong class="sm:text-sm md:text-md lg:text-base text-900 ml-2"
+            >Referencia</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [disabled]="true"
+              [(ngModel)]="detalleEmergencia.referencia"
+            />
+            <i class="pi pi-unlock"></i>
+          </span>
+        </div>
+        <div class="field col-12 sm:col-6 md:col-4 lg:col-3 xl:col-2">
+          <strong class="sm:text-sm md:text-md lg:text-base text-900 ml-2"
+            >Hora de Llamada</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [disabled]="true"
+              [(ngModel)]="detalleEmergencia.horaLlamada"
+            />
+            <i class="pi pi-unlock"></i>
+          </span>
+        </div>
+        <div class="field col-12 sm:col-6 md:col-4 lg:col-3 xl:col-2">
+          <strong class="sm:text-sm md:text-md lg:text-base text-900 ml-2"
+            >Hora de Despacho</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [disabled]="true"
+              [(ngModel)]="detalleEmergencia.horaDespacho"
+            />
+            <i class="pi pi-unlock"></i>
+          </span>
+        </div>
+        <div class="field col-12 sm:col-6 md:col-4 lg:col-3 xl:col-2">
+          <strong class="sm:text-sm md:text-md lg:text-base text-900 ml-2"
+            >Fecha</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              disabled="true"
+              [(ngModel)]="detalleEmergencia.fechaDespacho"
+            />
+            <i class="pi pi-unlock sm:text-sm md:text-md lg:text-base"></i>
+          </span>
+        </div>
+        <div class="field col-12 sm:col-6 md:col-4 lg:col-3 xl:col-3">
+          <strong class="sm:text-sm md:text-md lg:text-base text-900 ml-2"
+            >Tipo Emergencia</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [(ngModel)]="detalleEmergencia.descripcionP"
+              [disabled]="true"
+            />
+            <i class="pi pi-unlock"></i>
+          </span>
+        </div>
+        <div class="field col-12 sm:col-6 md:col-4 lg:col-3 xl:col-3">
+          <strong class="sm:text-sm md:text-md lg:text-base text-900 ml-2"
+            >Descripción</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [disabled]="true"
+              [(ngModel)]="detalleEmergencia.descripcionH"
+            />
+            <i class="pi pi-unlock"></i>
+          </span>
+        </div>
+
+        <div class="field col-12 sm:col-6 md:col-4 lg:col-3 xl:col-2">
+          <strong class="sm:text-sm md:text-md lg:text-base text-900 ml-2"
+            >Forma de Aviso</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [(ngModel)]="detalleEmergencia.formaAviso"
+              [disabled]="false"
+              (ngModelChange)="validarCampos()"
+            />
+            <i class="pi pi-pencil"></i>
+          </span>
+        </div>
+        <div class="field col-12 sm:col-6 md:col-6 lg:col-6 xl:col-5">
+          <strong class="sm:text-sm md:text-md lg:text-base text-900 ml-2"
+            >Radio Operador</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [(ngModel)]="detalleEmergencia.nombresRadioOperador"
+              [disabled]="true"
+            />
+            <i class="pi pi-unlock"></i>
+          </span>
+        </div>
+        <div class="field col-12 sm:col-6 md:col-6 lg:col-6 xl:col-5">
+          <strong class="sm:text-sm md:text-md lg:text-base text-900 ml-2"
+            >Comandante de Emergencia</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [(ngModel)]="nombresComandante"
+              [disabled]="true"
+            />
+            <i class="pi pi-unlock"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="mb-0 flex justify-content-center align-items-center">
+        <div>
+          <p
+            class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg xl:text-xl font-semibold text-900"
+          >
+            Datos del Afectado / Representante Legal
+          </p>
+        </div>
+      </div>
+      <div
+        style="
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(190, 31, 45, 1) 40%,
+            rgba(0, 174, 239, 1) 60%
+          );
+        "
+        class="mb-5"
+      ></div>
+
+      <div class="formgrid grid text-left">
+        <div class="col-12 lg:col-12 xl:col-12 lg:mb-0 mb-2">
+          <p-button
+            label="Agregar"
+            styleClass="p-button-help p-button-sm p-button-rounded p-button-outlined mb-2"
+            (click)="btn_agregar_afectado()"
+            [loading]="loading_agregar_afectado"
+            pTooltip="Agregar datos del afectado"
+            tooltipPosition="top"
+          ></p-button>
+          <p-table
+            [value]="data_afectados"
+            styleClass="p-datatable-sm"
+            selectionMode="single"
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="min-width: 0rem">
+                  <div class="flex align-items-center">
+                    <span class="sm:text-sm md:text-md lg:text-base text-900"
+                      >Nombres completos</span
+                    >
+                  </div>
+                </th>
+                <th style="min-width: 0rem">
+                  <div class="flex align-items-center">
+                    <span class="sm:text-sm md:text-md lg:text-base text-900"
+                      >Identificacion</span
+                    >
+                  </div>
+                </th>
+                <th style="min-width: 0rem">
+                  <div class="flex align-items-center">
+                    <strong class="sm:text-sm md:text-md lg:text-base text-900"
+                      >Teléfono</strong
+                    >
+                  </div>
+                </th>
+
+                <th style="min-width: 0rem">
+                  <div class="flex align-items-center"></div>
+                </th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-item>
+              <tr>
+                <td>
+                  <div class="flex align-items-center">
+                    <span class="sm:text-sm md:text-md lg:text-base text-900">{{
+                      item.nombresAfectado
+                    }}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="flex align-items-center">
+                    <span class="sm:text-sm md:text-md lg:text-base text-900">{{
+                      item.ciAfectado
+                    }}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="flex align-items-center">
+                    <span class="sm:text-sm md:text-md lg:text-base text-900">{{
+                      item.telefonoAfectado
+                    }}</span>
+                  </div>
+                </td>
+
+                <td>
+                  <div class="flex align-items-center justify-content-around">
+                    <div class="flex align-items-center gap-3">
+                      <p-button
+                        label=""
+                        styleClass="p-button-sm p-button-warning p-button-rounded p-button-outlined"
+                        icon="pi pi-file-edit"
+                        [loading]="loadingActualizarVictimas"
+                        (onClick)="
+                          btn_abrir_form_actualizar_afectado(item.uuidAfectado)
+                        "
+                        pTooltip="Editar datos"
+                        tooltipPosition="top"
+                      ></p-button>
+                    </div>
+
+                    <div class="flex align-items-center gap-3">
+                      <p-button
+                        label=""
+                        styleClass="p-button-sm p-button-danger p-button-rounded p-button-outlined"
+                        icon="pi pi-trash"
+                        (onClick)="btn_eliminar_afectado(item.uuidAfectado)"
+                        pTooltip="Eliminar registro"
+                        tooltipPosition="top"
+                      ></p-button>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td>Aún no se han agregado registros de afectados</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="mb-0 flex justify-content-center align-items-center">
+        <div>
+          <p
+            class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg xl:text-xl font-semibold text-900"
+          >
+            Victimas
+          </p>
+        </div>
+      </div>
+      <div
+        style="
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(190, 31, 45, 1) 40%,
+            rgba(0, 174, 239, 1) 60%
+          );
+        "
+        class="mb-5"
+      ></div>
+      <div class="grid formgrid mt-5 mb-5">
+        <div class="col-12 lg:col-12 xl:col-12 lg:mb-0 mb-2">
+          <p-button
+            label="Agregar"
+            styleClass="p-button-help p-button-sm p-button-rounded p-button-outlined mb-2 "
+            (click)="btnAgregarVictima()"
+            [loading]="loadingAgregarVictima"
+            pTooltip="Agregar datos de victimas"
+            tooltipPosition="top"
+          ></p-button>
+          <!-- </div> -->
+          <p-table
+            [value]="data_victimas"
+            styleClass="p-datatable-sm"
+            selectionMode="single"
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="min-width: 0rem">
+                  <div class="flex align-items-center">
+                    <span class="sm:text-sm md:text-md lg:text-base text-900"
+                      >Nombres Completos</span
+                    >
+                  </div>
+                </th>
+                <th style="min-width: 0rem">
+                  <div class="flex align-items-center">
+                    <span class="sm:text-sm md:text-md lg:text-base text-900"
+                      >Identificacion</span
+                    >
+                  </div>
+                </th>
+                <th style="min-width: 0rem">
+                  <div class="flex align-items-center">
+                    <strong class="sm:text-sm md:text-md lg:text-base text-900"
+                      >Rescate 
+                      Recuperación o Traslado</strong
+                    >
+                  </div>
+                </th>
+
+                <th style="min-width: 0rem">
+                  <div class="flex align-items-center"></div>
+                </th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-item>
+              <tr>
+                <td>
+                  <div class="flex align-items-center">
+                    <span class="sm:text-sm md:text-md lg:text-base text-900">{{
+                      item.nombresVictima
+                    }}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="flex align-items-center">
+                    <span class="sm:text-sm md:text-md lg:text-base text-900">{{
+                      item.ciVictima
+                    }}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="flex align-items-center">
+                    <span class="sm:text-sm md:text-md lg:text-base text-900">{{
+                      item.procedimiento
+                    }}</span>
+                  </div>
+                </td>
+
+                <td>
+                  <div class="flex align-items-center justify-content-around">
+                    <div class="flex align-items-center gap-3">
+                      <p-button
+                        label=""
+                        styleClass="p-button-sm p-button-info p-button-rounded p-button-outlined"
+                        icon="pi pi-file-edit pi-window-maximize"
+                        [loading]="loading_abrir_form_victimas"
+                        (onClick)="
+                          btn_abrir_form_actualizar_victima(item.uuidVictima)
+                        "
+                        pTooltip="Ver más detalles"
+                        tooltipPosition="top"
+                      ></p-button>
+                    </div>
+
+                    <div class="flex align-items-center gap-3">
+                      <p-button
+                        label=""
+                        styleClass="p-button-sm p-button-danger p-button-rounded p-button-outlined"
+                        icon="pi pi-trash"
+                        (onClick)="btn_eliminar_victima(item.uuidVictima)"
+                        pTooltip="Eliminar registro"
+                        tooltipPosition="top"
+                      ></p-button>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td>Aún no se han agregado registros de victimas</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 sm:col-12 md:col-4 lg:col-4">
+      <div class="mb-0 flex justify-content-center align-items-center">
+        <div>
+          <p
+            class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg xl:text-xl font-semibold text-900"
+          >
+            Posible Causa de Emergencia
+          </p>
+        </div>
+      </div>
+      <div
+        style="
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(190, 31, 45, 1) 40%,
+            rgba(0, 174, 239, 1) 60%
+          );
+        "
+        class="mb-5"
+      ></div>
+
+      <div class="formgrid grid text-left">
+        <div class="field col-12 sm:col-6 md:col-12 lg:col-12 xl:col-12">
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              placeholder="Indique las causas identificadas"
+              pTooltip="Ejemplo: Natural, Humana, Mecánica u otras"
+              tooltipPosition="bottom"
+              tooltipEvent="focus"
+              [(ngModel)]="detalleEmergencia.causaDeEmergencia"
+              (ngModelChange)="validarCampos()"
+            />
+            <i
+              class="pi pi-pencil sm:text-sm md:text-md lg:text-base text-900"
+            ></i>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 sm:col-12 md:col-6 lg:col-4">
+      <div class="mb-0 flex justify-content-center align-items-center">
+        <div>
+          <p
+            class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg xl:text-xl font-semibold text-900"
+          >
+            Daños Materiales
+          </p>
+        </div>
+      </div>
+      <div
+        style="
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(190, 31, 45, 1) 40%,
+            rgba(0, 174, 239, 1) 60%
+          );
+        "
+        class="mb-5"
+      ></div>
+      <div class="formgrid grid text-left">
+        <div class="field col-12 sm:col-6 md:col-12 lg:col-12 xl:col-12">
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              placeholder="Indique los daños materiales"
+              pTooltip="Ejemplo: Electrodomésticos, Electrónicos, Bienes e Inmuebles, Vehículos u otros"
+              tooltipPosition="bottom"
+              tooltipEvent="focus"
+              [(ngModel)]="detalleEmergencia.danoMateriales"
+              (ngModelChange)="validarCampos()"
+            />
+            <i
+              class="pi pi-pencil sm:text-sm md:text-md lg:text-base text-900"
+            ></i>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 md:col-6 lg:col-4">
+      <div class="mb-0 flex justify-content-center align-items-center">
+        <div>
+          <p
+            class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg xl:text-xl font-semibold text-900"
+          >
+            Unidades Presente
+          </p>
+        </div>
+      </div>
+      <div
+        style="
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(190, 31, 45, 1) 40%,
+            rgba(0, 174, 239, 1) 60%
+          );
+        "
+        class="mb-5"
+      ></div>
+      <div class="formgrid grid text-left">
+        <div class="field col-12 sm:col-6 md:col-12 lg:col-12 xl:col-12">
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [(ngModel)]="nombresUnidades"
+              [disabled]="true"
+            />
+            <i
+              class="pi pi-unlock sm:text-sm md:text-md lg:text-base text-900"
+            ></i>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-4">
+      <div class="mb-0 flex justify-content-center align-items-center">
+        <div>
+          <p
+            class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg xl:text-xl font-semibold text-900"
+          >
+            Personal Presente
+          </p>
+        </div>
+      </div>
+      <div
+        style="
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(190, 31, 45, 1) 40%,
+            rgba(0, 174, 239, 1) 60%
+          );
+        "
+        class="mb-5"
+      ></div>
+      <div class="formgrid grid text-left">
+        <div class="field col-12 sm:col-6 md:col-12 lg:col-12 xl:col-12">
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              placeholder="Indique el personal bomberil"
+              [(ngModel)]="detalleEmergencia.personalPresente"
+              (ngModelChange)="validarCampos()"
+            />
+            <i
+              class="pi pi-pencil sm:text-sm md:text-md lg:text-base text-900"
+            ></i>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-4">
+      <div class="mb-0 flex justify-content-center align-items-center">
+        <div>
+          <p
+            class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg xl:text-xl font-semibold text-900"
+          >
+            Apoyo Requerido
+          </p>
+        </div>
+      </div>
+      <div
+        style="
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(190, 31, 45, 1) 40%,
+            rgba(0, 174, 239, 1) 60%
+          );
+        "
+        class="mb-5"
+      ></div>
+      <div class="formgrid grid text-left">
+        <div class="field col-12 sm:col-6 md:col-12 lg:col-12 xl:col-12">
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              placeholder="Indique si recibió apoyo externo"
+              [(ngModel)]="detalleEmergencia.apoyoRequerido"
+              pTooltip="Ejemplo: Policía Nacional, Tránsito, CNEL u otros"
+              tooltipPosition="bottom"
+              tooltipEvent="focus"
+              (ngModelChange)="validarCampos()"
+            />
+            <i
+              class="pi pi-pencil sm:text-sm md:text-md lg:text-base text-900"
+            ></i>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="mb-0 flex justify-content-center align-items-center">
+        <div>
+          <p
+            class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg xl:text-xl font-semibold text-900"
+          >
+            Novedades
+          </p>
+        </div>
+      </div>
+      <div
+        style="
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(190, 31, 45, 1) 40%,
+            rgba(0, 174, 239, 1) 60%
+          );
+        "
+        class="mb-5"
+      ></div>
+      <div class="field col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+        <span class="flex flex-column mt-2 p-input-icon-left">
+          <i class="pi pi-pencil text-900"></i>
+          <textarea
+            pInputTextarea
+            placeholder="Indique aqui las novedades presentadas..."
+            [autoResize]="true"
+            [(ngModel)]="detalleEmergencia.observacionCmdt"
+            (ngModelChange)="validarCampos()"
+          ></textarea>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AGREGAR VICTIMAS -->
+<p-dialog
+  [(visible)]="formNuevaVictima"
+  [style]="{ width: '60%' }"
+  [modal]="true"
+  class="p-fluid"
+>
+  <!-- header="Datos de Victimas" -->
+  <div class="grid">
+    <div class="col-12 md:col-6 lg:col-6">
+      <div class="mb-0 flex justify-content-center align-items-center">
+        <div>
+          <p
+            class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg xl:text-xl font-semibold text-900"
+          >
+            Datos Personales
+          </p>
+        </div>
+      </div>
+      <div
+        style="
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(190, 31, 45, 1) 40%,
+            rgba(0, 174, 239, 1) 60%
+          );
+        "
+        class="mb-5"
+      ></div>
+
+      <div class="formgrid grid text-left">
+        <div class="field col-12 sm:col-6 md:col-12 lg:col-6">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >N° Identificación</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [(ngModel)]="data_victima.ciVictima"
+            />
+            <i class="pi pi-pencil text-900"></i>
+          </span>
+        </div>
+        <div class="field col-12">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >Nombres y Apellidos</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [(ngModel)]="data_victima.nombresVictima"
+              [disabled]="false"
+            />
+            <i
+              class="pi pi-pencil sm:text-sm md:text-md lg:text-base text-900"
+            ></i>
+          </span>
+          <p
+            *ngIf="mensajeCampoRequeridoVictima"
+            style="color: rgb(190, 31, 45)"
+            class="text-sm text-start mt-2"
+          >
+            🔴 ​Campo obligatorio
+          </p>
+        </div>
+        <div class="field col-12 sm:col-6 md:col-6 lg:col-6 xl:col-6">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >Fecha de nacimiento</strong
+          >
+          <div class="flex flex-column mt-2 p-input-icon-right">
+            <i class="pi pi-pencil text-900"></i>
+            <p-inputMask
+              mask="9999-99-99"
+              [(ngModel)]="data_victima.fechaNacimientoVictima"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              (ngModelChange)="mensajeFechaInvalida = false"
+            ></p-inputMask>
+          </div>
+          <p
+            *ngIf="mensajeFechaInvalida"
+            style="color: rgb(190, 31, 45)"
+            class="text-sm text-start mt-2"
+          >
+            🔴 Fecha no válida
+          </p>
+        </div>
+        <div class="field col-12 sm:col-6 md:col-6 lg:col-6 xl:col-6">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >Télefono</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <div class="flex flex-column mt-2 p-input-icon-right">
+              <i class="pi pi-pencil text-900"></i>
+              <p-inputMask
+                mask="9999999999"
+                [(ngModel)]="data_victima.telefonoVictima"
+                class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              ></p-inputMask>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-6">
+      <div class="mb-0 flex justify-content-center align-items-center">
+        <div>
+          <p
+            class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg xl:text-xl font-semibold text-900"
+          >
+            Lugar de Traslado
+          </p>
+        </div>
+      </div>
+      <div
+        style="
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(190, 31, 45, 1) 40%,
+            rgba(0, 174, 239, 1) 60%
+          );
+        "
+        class="mb-5"
+      ></div>
+
+      <div class="formgrid grid text-left">
+        <div class="field col-12">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >Procedimiento</strong
+          >
+          <div class="flex flex-wrap gap-3 mt-3">
+            <div class="flex align-items-center">
+              <p-radioButton
+                value="Rescate"
+                [(ngModel)]="data_victima.procedimiento"
+              ></p-radioButton>
+              <label class="ml-2">Rescate</label>
+            </div>
+
+            <div class="flex align-items-center">
+              <p-radioButton
+                value="Recuperación"
+                [(ngModel)]="data_victima.procedimiento"
+              ></p-radioButton>
+              <label class="ml-2">Recuperación</label>
+            </div>
+
+            <div class="flex align-items-center">
+              <p-radioButton
+                value="Traslado"
+                [(ngModel)]="data_victima.procedimiento"
+              ></p-radioButton>
+              <label class="ml-2">Traslado</label>
+            </div>
+          </div>
+          <p
+            *ngIf="mensajeCampoRequeridoVictima"
+            style="color: rgb(190, 31, 45)"
+            class="text-sm text-start mt-2"
+          >
+            🔴 ​Campo obligatorio
+          </p>
+        </div>
+        <div class="field col-12">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >Casa Médica</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [(ngModel)]="data_victima.casaMedica"
+              placeholder=""
+            />
+            <i class="pi pi-pencil"></i>
+          </span>
+        </div>
+        <div class="field col-12 sm:col-6 md:col-6 lg:col-6 xl:col-6">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >Hora de Traslado</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="time"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [(ngModel)]="data_victima.horaTraslado"
+            />
+            <i class="pi pi-pencil text-900"></i>
+          </span>
+        </div>
+        <div class="field col-12 sm:col-6 md:col-6 lg:col-6 xl:col-6">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >Hora de Llegada</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="time"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [(ngModel)]="data_victima.horaLlegadaCasaMedica"
+            />
+            <i class="pi pi-pencil text-900"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-6">
+      <div class="formgrid grid text-left">
+        <div class="field col-12 sm:col-5 md:col-5 lg:col-5 xl:col-5">
+          <p-button
+            label="Guardar"
+            [loading]="loadingRegistrarVictimas"
+            styleClass="p-button-primary p-button-sm w-full p-button-rounded p-button-outlined"
+            (onClick)="btnRegistrarVictima()"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<!-- ACTUALIZAR VICTIMAS -->
+<p-dialog
+  [(visible)]="formActualizarVictima"
+  [style]="{ width: '60%' }"
+  [modal]="true"
+  class="p-fluid"
+>
+  <!-- header="Datos de Victimas" -->
+  <div class="grid">
+    <div class="col-12 md:col-6 lg:col-6">
+      <div class="mb-0 flex justify-content-center align-items-center">
+        <div>
+          <p
+            class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg xl:text-xl font-semibold text-900"
+          >
+            Datos Personales
+          </p>
+        </div>
+      </div>
+      <div
+        style="
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(190, 31, 45, 1) 40%,
+            rgba(0, 174, 239, 1) 60%
+          );
+        "
+        class="mb-5"
+      ></div>
+
+      <div class="formgrid grid text-left">
+        <div class="field col-12 sm:col-6 md:col-12 lg:col-6">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >N° Identificación</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [(ngModel)]="data_victima_update.ciVictima"
+            />
+            <!-- [disabled]="!tipoDeIdentificacion" -->
+            <i class="pi pi-pencil text-900"></i>
+          </span>
+        </div>
+        <div class="field col-12">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >Nombres y Apellidos</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [(ngModel)]="data_victima_update.nombresVictima"
+              [disabled]="false"
+            />
+            <i
+              class="pi pi-pencil sm:text-sm md:text-md lg:text-base text-900"
+            ></i>
+          </span>
+          <p
+            *ngIf="mensajeCampoRequeridoVictima"
+            style="color: rgb(190, 31, 45)"
+            class="text-sm text-start mt-2"
+          >
+            🔴 ​Campo obligatorio
+          </p>
+        </div>
+        <div class="field col-12 sm:col-6 md:col-6 lg:col-6 xl:col-6">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >Fecha de nacimiento</strong
+          >
+          <div class="flex flex-column mt-2 p-input-icon-right">
+            <i class="pi pi-pencil text-900"></i>
+            <p-inputMask
+              mask="9999-99-99"
+              [(ngModel)]="data_victima_update.fechaNacimientoVictima"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+            ></p-inputMask>
+          </div>
+          <p
+            *ngIf="mensajeFechaInvalida"
+            style="color: rgb(190, 31, 45)"
+            class="text-sm text-start mt-2"
+          >
+            🔴 Fecha no válida
+          </p>
+        </div>
+        <div class="field col-12 sm:col-6 md:col-6 lg:col-6 xl:col-6">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >Télefono</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <div class="flex flex-column mt-2 p-input-icon-right">
+              <i class="pi pi-pencil text-900"></i>
+              <p-inputMask
+                mask="9999-99-99"
+                [(ngModel)]="data_victima_update.telefonoVictima"
+                class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              ></p-inputMask>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-6">
+      <div class="mb-0 flex justify-content-center align-items-center">
+        <div>
+          <p
+            class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg xl:text-xl font-semibold text-900"
+          >
+            Lugar de Traslado
+          </p>
+        </div>
+      </div>
+      <div
+        style="
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(190, 31, 45, 1) 40%,
+            rgba(0, 174, 239, 1) 60%
+          );
+        "
+        class="mb-5"
+      ></div>
+
+      <div class="formgrid grid text-left">
+        <div class="field col-12">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >Procedimiento</strong
+          >
+          <div class="flex flex-wrap gap-3 mt-3">
+            <div class="flex align-items-center">
+              <p-radioButton
+                value="Rescate"
+                [(ngModel)]="data_victima_update.procedimiento"
+              ></p-radioButton>
+              <label class="ml-2">Rescate</label>
+            </div>
+
+            <div class="flex align-items-center">
+              <p-radioButton
+                value="Recuperación"
+                [(ngModel)]="data_victima_update.procedimiento"
+              ></p-radioButton>
+              <label class="ml-2">Recuperación</label>
+            </div>
+
+            <div class="flex align-items-center">
+              <p-radioButton
+                value="Traslado"
+                [(ngModel)]="data_victima_update.procedimiento"
+              ></p-radioButton>
+              <label class="ml-2">Traslado</label>
+            </div>
+          </div>
+          <p
+            *ngIf="mensajeCampoRequeridoVictima"
+            style="color: rgb(190, 31, 45)"
+            class="text-sm text-start mt-2"
+          >
+            🔴 ​Campo obligatorio
+          </p>
+        </div>
+        <div class="field col-12">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >Casa Médica</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              placeholder="Nombre de casa médica"
+              [(ngModel)]="data_victima_update.casaMedica"
+            />
+            <i class="pi pi-pencil"></i>
+          </span>
+        </div>
+        <div class="field col-12 sm:col-6 md:col-6 lg:col-6 xl:col-6">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >Hora de Traslado</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="time"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [(ngModel)]="data_victima_update.horaTraslado"
+            />
+            <i class="pi pi-pencil text-900"></i>
+          </span>
+        </div>
+        <div class="field col-12 sm:col-6 md:col-6 lg:col-6 xl:col-6">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >Hora de Llegada</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="time"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [(ngModel)]="data_victima_update.horaLlegadaCasaMedica"
+            />
+            <i class="pi pi-pencil text-900"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-6">
+      <div class="formgrid grid text-left">
+        <div class="field col-12 sm:col-5 md:col-5 lg:col-5 xl:col-5">
+          <p-button
+            label="Actualizar"
+            [loading]="loading_actualizar_data_victima"
+            styleClass="p-button-primary p-button-sm w-full p-button-rounded p-button-outlined"
+            (onClick)="btn_guardar_actualizado_victima(data_victima_update)"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<!-- AGREGAR AFECTADOS -->
+<p-dialog
+  [(visible)]="form_nuevo_afectado"
+  [style]="{ width: '60%' }"
+  [modal]="true"
+  class="p-fluid"
+>
+  <div class="grid">
+    <div class="col-12">
+      <div class="mb-0 flex justify-content-center align-items-center">
+        <div>
+          <p
+            class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg xl:text-xl font-semibold text-900"
+          >
+            Datos del afectado o representante legal
+          </p>
+        </div>
+      </div>
+      <div
+        style="
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(190, 31, 45, 1) 40%,
+            rgba(0, 174, 239, 1) 60%
+          );
+        "
+        class="mb-5"
+      ></div>
+
+      <div class="formgrid grid text-left">
+        <div class="field col-12 sm:col-4 md:col-4 lg:col-3 xl:col-3">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >N° Identificación</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [(ngModel)]="data_nuevo_afectado.ciAfectado"
+            />
+            <i class="pi pi-pencil text-900"></i>
+          </span>
+          <p
+            *ngIf="mensajeCampoRequeridoAfectado"
+            style="color: rgb(190, 31, 45)"
+            class="text-sm text-start mt-2"
+          >
+            🔴 Campo requerido
+          </p>
+        </div>
+        <div class="field col-12 sm:col-8 md:col-8 lg:col-6 xl:col-5">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >Nombres y Apellidos</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [(ngModel)]="data_nuevo_afectado.nombresAfectado"
+            />
+            <i
+              class="pi pi-pencil sm:text-sm md:text-md lg:text-base text-900"
+            ></i>
+          </span>
+          <p
+            *ngIf="mensajeCampoRequeridoAfectado"
+            style="color: rgb(190, 31, 45)"
+            class="text-sm text-start mt-2"
+          >
+            🔴 Campo requerido
+          </p>
+        </div>
+        <div class="field col-12 sm:col-4 md:col-4 lg:col-3 xl:col-3">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >Fecha de nacimiento</strong
+          >
+          <div class="flex flex-column mt-2 p-input-icon-right">
+            <i class="pi pi-pencil text-900"></i>
+            <p-inputMask
+              mask="9999-99-99"
+              [(ngModel)]="data_nuevo_afectado.fechaNacimientoAfectado"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              (ngModelChange)="mensajeFechaInvalida = false"
+            ></p-inputMask>
+          </div>
+          <p
+            *ngIf="mensajeFechaInvalida"
+            style="color: rgb(190, 31, 45)"
+            class="text-sm text-start mt-2"
+          >
+            🔴 Fecha no válida
+          </p>
+        </div>
+        <div class="field col-12 sm:col-4 md:col-4 lg:col-3 xl:col-3">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >Télefono</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [(ngModel)]="data_nuevo_afectado.telefonoAfectado"
+            />
+            <i class="pi pi-pencil text-900"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 md:col-6 lg:col-6">
+      <div class="formgrid grid text-left">
+        <div class="field col-12 sm:col-5 md:col-5 lg:col-5 xl:col-5">
+          <p-button
+            label="Guardar"
+            [loading]="loading_guardar_afectado"
+            styleClass="p-button-primary p-button-sm w-full p-button-rounded p-button-outlined"
+            (onClick)="btn_registrar_afectado()"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<!-- ACTUALIZAR AFECTADOS -->
+<p-dialog
+  [(visible)]="form_actualizar_afectado"
+  [style]="{ width: '60%' }"
+  [modal]="true"
+  class="p-fluid"
+>
+  <div class="grid">
+    <div class="col-12">
+      <div class="mb-0 flex justify-content-center align-items-center">
+        <div>
+          <p
+            class="mt-0 mb-0 sm:text-sm md:text-md lg:text-lg xl:text-xl font-semibold text-900"
+          >
+            Datos del afectado o representante legal
+          </p>
+        </div>
+      </div>
+      <div
+        style="
+          height: 2px;
+          background: linear-gradient(
+            90deg,
+            rgba(190, 31, 45, 1) 40%,
+            rgba(0, 174, 239, 1) 60%
+          );
+        "
+        class="mb-5"
+      ></div>
+
+      <div class="formgrid grid text-left">
+        <div class="field col-12 sm:col-4 md:col-4 lg:col-3 xl:col-3">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >N° Identificación</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [(ngModel)]="data_afectado_update.ciAfectado"
+            />
+            <i class="pi pi-pencil text-900"></i>
+          </span>
+          <p
+            *ngIf="mensajeCampoRequeridoAfectado"
+            style="color: rgb(190, 31, 45)"
+            class="text-sm text-start mt-2"
+          >
+            🔴 Campo requerido
+          </p>
+        </div>
+        <div class="field col-12 sm:col-8 md:col-8 lg:col-6 xl:col-5">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >Nombres y Apellidos
+          </strong>
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [disabled]="false"
+              [(ngModel)]="data_afectado_update.nombresAfectado"
+            />
+            <i
+              class="pi pi-pencil sm:text-sm md:text-md lg:text-base text-900"
+            ></i>
+          </span>
+          <p
+            *ngIf="mensajeCampoRequeridoAfectado"
+            style="color: rgb(190, 31, 45)"
+            class="text-sm text-start mt-2"
+          >
+            🔴 Campo requerido
+          </p>
+        </div>
+        <div class="field col-12 sm:col-4 md:col-4 lg:col-3 xl:col-3">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >Fecha de nacimiento</strong
+          >
+          <div class="flex flex-column mt-2 p-input-icon-right">
+            <i class="pi pi-pencil text-900"></i>
+            <p-inputMask
+              mask="9999-99-99"
+              [(ngModel)]="data_afectado_update.fechaNacimientoAfectado"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              (ngModelChange)="mensajeFechaInvalida = false"
+            ></p-inputMask>
+          </div>
+          <p
+            *ngIf="mensajeFechaInvalida"
+            style="color: rgb(190, 31, 45)"
+            class="text-sm text-start mt-2"
+          >
+            🔴 Fecha no válida
+          </p>
+        </div>
+        <div class="field col-12 sm:col-4 md:col-4 lg:col-3 xl:col-3">
+          <strong
+            class="sm:text-sm md:text-md lg:text-base font-semibold ml-2 text-900"
+            >Télefono</strong
+          >
+          <span class="flex flex-column mt-2 p-input-icon-left">
+            <input
+              pInputText
+              type="text"
+              class="p-inputtext-sm sm:text-sm md:text-md lg:text-base"
+              [(ngModel)]="data_afectado_update.telefonoAfectado"
+            />
+            <i class="pi pi-pencil text-900"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 md:col-6 lg:col-6">
+      <div class="formgrid grid text-left">
+        <div class="field col-12 sm:col-5 md:col-5 lg:col-5 xl:col-5">
+          <p-button
+            label="Actualizar"
+            [loading]="loading_actualizar_afectado"
+            styleClass="p-button-primary p-button-sm w-full p-button-rounded p-button-outlined"
+            (onClick)="btn_guardar_actualizado_afectado(data_afectado_update)"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-dialog>

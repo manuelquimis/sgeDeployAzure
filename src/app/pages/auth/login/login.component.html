@@ -1,0 +1,81 @@
+<div
+  class="flex justify-content-center align-items-center"
+  style="height: 100vh; background-color: #eff3f8"
+>
+  <div
+    class="col-11 sm:col-8 md:col-8 lg:col-4 xl:col-4 surface-card p-4 shadow-2 border-round"
+  >
+    <div class="border-400 border-top-2 mt-3 mb-3"></div>
+    <div class="grid surface-card">
+      <div class="col-12 sm:col-12 md:col-12 lg:col-12 xl:col-12">
+        <div
+          class="flex gap-3 justify-content-center align-items-center sm:mt-2 md:mt-2 lg:mt-2 mb-0"
+        >
+          <img
+            src="../../../../assets/layout/images/logo_rojo.svg"
+            alt="Image"
+            height="100"
+            class="p-d-none p-d-md-inline"
+          />
+          <img
+            src="../../../../assets/layout/images/nombre_rojo.svg"
+            alt="Image"
+            height="80"
+          />
+        </div>
+
+        <div class="border-400 border-top-2 mt-4"></div>
+      </div>
+
+      <div class="col-12 sm:col-12 md:col-8 lg:col-12">
+        <strong class="capitalize ml-3 sm:text-sm md:text-md lg:text-md"
+          >correo electrónico</strong
+        >
+        <span class="flex flex-column mt-2 p-input-icon-left">
+          <i class="pi pi-at text-900"></i>
+          <input
+            class="p-inputtext-sm sm:text-sm md:text-md lg:text-md"
+            type="email"
+            pInputText
+            placeholder="nombre.apellido@bomberosmanta.gob.ec"
+            [(ngModel)]="usuario.email"
+            required="true"
+          />
+        </span>
+      </div>
+      <div class="col-12 sm:col-12 md:col-4 lg:col-12">
+        <strong class="capitalize ml-3 sm:text-sm md:text-md lg:text-md"
+          >contraseña</strong
+        >
+        <span class="flex flex-column mt-2 p-input-icon-left">
+          <i class="pi pi-lock text-900"></i>
+          <input
+            class="p-inputtext-sm sm:text-sm md:text-md lg:text-md"
+            type="password"
+            pInputText
+            placeholder="**********"
+            [(ngModel)]="usuario.password"
+            [required]="true"
+          />
+        </span>
+      </div>
+      <div class="col-12">
+        <div class="grid">
+          <div class="col-3 sm:col-3 md:col-3"></div>
+          <div class="col-6 sm:col-5 md:col-6">
+            <p-button
+              class="flex flex-column text-normal"
+              label="Ingresar"
+              icon="fa-solid fa-right-to-bracket"
+              styleClass="p-button-info p-button-sm p-button-rounded p-button-raised p-button-outlined"
+              [loading]="loading"
+              (click)="btn_login()"
+              [loading]="loadingLogin"
+            ></p-button>
+          </div>
+          <div class="col-3 sm:col-3 md:col-3"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

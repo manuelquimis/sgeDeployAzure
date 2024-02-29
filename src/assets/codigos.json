@@ -1,0 +1,127 @@
+{
+  "codigos": [
+    {
+      "codigoPadre": "1",
+      "descripcion": "Incendio",
+      "hijos": [
+        {
+          "codigo": "10-1",
+          "descripcion": "Conato",
+          "nivel": "M"
+        },
+        {
+          "codigo": "10-2",
+          "descripcion": "Estructural",
+          "nivel": "A"
+        },
+        {
+          "codigo": "10-3",
+          "descripcion": "Declarado",
+          "nivel": "C"
+        },
+        {
+          "codigo": "10-4",
+          "descripcion": "Forestal",
+          "nivel": "B"
+        }
+      ],
+      "nivel": "C"
+    },
+    {
+      "codigoPadre": "2",
+      "descripcion": "Rescate",
+      "hijos": [
+        {
+          "codigo": "10-5-1",
+          "descripcion": "Vehicular",
+          "nivel": "M"
+        },
+        {
+          "codigo": "10-5-2",
+          "descripcion": "Acuático",
+          "nivel": "M"
+        }
+      ],
+      "nivel": "B"
+    },
+    {
+      "codigoPadre": "3",
+      "descripcion": "Auxilio general",
+      "hijos": [
+        {
+          "codigo": "10-7",
+          "descripcion": "Indundación",
+          "nivel": "M"
+        },
+        {
+          "codigo": "10-9",
+          "descripcion": "Auxilio General",
+          "nivel": "B"
+        },
+        {
+          "codigo": "10-10",
+          "descripcion": "Accidente Aviatorio",
+          "nivel": "C"
+        },
+        {
+          "codigo": "10-11",
+          "descripcion": "Deslave",
+          "nivel": "A"
+        },
+        {
+          "codigo": "10-16",
+          "descripcion": "Rescate",
+          "nivel": "A"
+        }
+      ],
+      "nivel": "C"
+    },
+    {
+      "codigoPadre": "4",
+      "descripcion": "Asist. Amb.",
+      "hijos": [
+        {
+          "codigo": "7-46",
+          "descripcion": "Persona Abaleada",
+          "nivel": "C"
+        },
+        {
+          "codigo": "7-50",
+          "descripcion": "Atropellamiento",
+          "nivel": "C"
+        },
+        {
+          "codigo": "7-53",
+          "descripcion": "Volcamiento",
+          "nivel": "A"
+        },
+        {
+          "codigo": "7-46",
+          "descripcion": "Conato",
+          "nivel": "C"
+        },
+        {
+          "codigo": "10-21",
+          "descripcion": "Accidente de tránsito",
+          "nivel": "M"
+        },
+        {
+          "codigo": "10-22",
+          "descripcion": "Asistencia médica",
+          "nivel": "M"
+        },
+        {
+          "codigo": "10-23",
+          "descripcion": "Traslado de Paciente",
+          "nivel": "B"
+        },
+        {
+          "codigo": "10-42",
+          "descripcion": "Bombero Caído",
+          "nivel": "A"
+        }
+      ],
+      "nivel": "B"
+    }
+  ]
+}

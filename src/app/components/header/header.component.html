@@ -1,0 +1,130 @@
+<div class="layout-topbar">
+  <a class="layout-topbar-logo" [routerLink]="'/emergencia/despachar'">
+    <img
+      src="../../../assets/layout/images/logo_rojo.svg"
+      alt=""
+      style="height: 45px; outline: none"
+    />
+    <img
+      src="../../../assets/layout/images/nombre_rojo.svg"
+      alt=""
+      style="outline: none"
+    />
+  </a>
+
+  <button
+    #menubutton
+    class="p-link layout-menu-button layout-topbar-button"
+    (click)="layoutService.onMenuToggle()"
+  >
+    <i class="pi pi-bars"></i>
+  </button>
+
+  <button
+    #topbarmenubutton
+    class="p-link layout-topbar-menu-button layout-topbar-buttona"
+    (click)="layoutService.showProfileSidebar()"
+  >
+    <i class="pi pi-ellipsis-v"></i>
+  </button>
+
+  <div
+    #topbarmenu
+    class="layout-topbar-menu"
+    [ngClass]="{
+      'layout-topbar-menu-mobile-active':
+        layoutService.state.profileSidebarVisible
+    }"
+  >
+    <p-avatar
+      class="layout-topbar-button"
+      image="../../../assets/layout/images/icon-perfil"
+      styleClass="mr-2"
+      size="large"
+      shape="circle"
+      *ngIf="!layoutService.state.profileSidebarVisible"
+    >
+    </p-avatar>
+    <span
+      *ngIf="!layoutService.state.profileSidebarVisible"
+      style="cursor: pointer"
+      >
+      <!-- [routerLink]="'/usuario/perfil'" -->
+      <strong
+        class="sm:text-sm md:text-base lg:text-base"
+        *ngIf="emailUsuario"
+        >{{ emailUsuario }}</strong
+      ><br />
+      <p
+        class="sm:text-sm md:text-base lg:text-base text-500 font-medium"
+        *ngIf="!layoutService.state.profileSidebarVisible"
+      >
+        {{
+          rolesUsuario.charAt(0).toUpperCase() +
+          rolesUsuario.slice(1).toLowerCase()
+        }}
+      </p>
+      <p
+        class="sm:text-sm md:text-base lg:text-base text-500 font-medium ml-4"
+        *ngIf="layoutService.state.profileSidebarVisible"
+      >
+        {{
+          rolesUsuario.charAt(0).toUpperCase() +
+          rolesUsuario.slice(1).toLowerCase()
+        }}
+      </p>
+    </span>
+
+    <!--  -->
+    <div
+      class="layout-topbar-button"
+      *ngIf="layoutService.state.profileSidebarVisible"
+    >
+      <p-avatar
+        image="../../../assets/layout/images/icon-perfil"
+        styleClass="mr-2"
+        size="small"
+        shape="circle"
+      >
+      </p-avatar>
+      <!-- <span [routerLink]="'/usuario/perfil'" style="cursor: pointer"> --> 
+      <span>
+        <strong class="font-medium"> {{ emailUsuario }}</strong
+        ><br />
+        <p class="text-500 font-normal ml-0">
+          {{
+            rolesUsuario.charAt(0).toUpperCase() +
+            rolesUsuario.slice(1).toLowerCase()
+          }}
+        </p>
+      </span>
+    </div>
+
+    <!-- <button
+    class="p-link layout-topbar-button"
+    *ngIf="layoutService.state.profileSidebarVisible"
+    >
+      <i class="pi pi-clone"></i>
+    </button> -->
+
+    <button
+      class="p-link layout-topbar-button"
+      *ngIf="layoutService.state.profileSidebarVisible"
+      [routerLink]="'/emergencia/despachar'"
+      style="cursor: pointer"
+    >
+      <i class="fa-solid fa-map-location-dot"></i>
+      <span>Registrar emergencia</span>
+    </button>
+
+    <button
+      class="p-link layout-topbar-button"
+      *ngIf="layoutService.state.profileSidebarVisible"
+      [routerLink]="'/emergencia/encurso'"
+      style="cursor: pointer"
+    >
+      <i class="fa-solid fa-list-check"></i>
+      <span>Emergencias actuales</span>
+    </button>
+  </div>
+</div>
