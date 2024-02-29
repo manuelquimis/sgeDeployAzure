@@ -1,10 +1,11 @@
 const  url = {
+  production: true,
   // URL_BASE: `https://4r2jcndw-3100.use2.devtunnels.ms`,
   URL_BASE: 'http://localhost:3100', // 
 } 
   
 export const enviroment = {
-  production: false,
+  production: true,
   mapboxKey: 'pk.eyJ1IjoiYWxlamFuZHIwIiwiYSI6ImNsamJ4MzNhNjA2cXkzbnNjbDJhbHhqNWUifQ.GaFfAZajqItc3ZpSWvYWYg',
   // LATITUD: -80.72499899345411,
   // LONGITUD: -0.9481691120841247,
